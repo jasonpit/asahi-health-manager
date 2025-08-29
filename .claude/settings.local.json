@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "Read(/opt/asahi-healer/ui/**)",
+      "Read(/opt/asahi-healer/**)",
+      "Read(/opt/asahi-healer/**)",
+      "Read(/opt/asahi-healer/ui/**)",
+      "Read(/opt/asahi-healer/ui/**)",
+      "Read(/opt/asahi-healer/ui/**)",
+      "Read(/opt/asahi-healer/ui/**)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
