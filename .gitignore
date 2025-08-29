@@ -1,0 +1,97 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Configuration files with sensitive data
+config.yaml
+*.config
+.env.local
+.env.production
+
+# API Keys and secrets
+*api_key*
+*secret*
+*token*
+.secrets
+secrets/
+
+# User-specific configuration
+.asahi_healer/
+~/.config/asahi_healer/config.yaml
+
+# Logs
+*.log
+logs/
+.local/log/
+
+# Backup files
+*~
+*.bak
+*.backup
+.asahi_healer_backups/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Claude Code specific
+.claude/
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Testing
+.coverage
+htmlcov/
+.tox/
+.pytest_cache/
+.cache
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Additional development artifacts
+README_UPDATED.md
+*.draft
+*.notes
+notes/
+drafts/

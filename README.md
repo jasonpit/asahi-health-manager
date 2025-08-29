@@ -7,9 +7,9 @@ An advanced, AI-powered system health management tool specifically designed for 
 [![Asahi Linux](https://img.shields.io/badge/Asahi-Linux-red.svg)](https://asahilinux.org/)
 [![AI Powered](https://img.shields.io/badge/AI-Powered-green.svg)](https://github.com/your-repo/asahi-health-manager)
 
-## 🌟 Features
+## Features
 
-### 🔍 Comprehensive System Scanning
+### Comprehensive System Scanning
 - **OS Health Analysis**: Memory, disk, kernel, and boot health monitoring
 - **Hardware Status**: Thermal monitoring, power management, display issues
 - **Network Diagnostics**: WiFi, connectivity, and interface health
@@ -17,7 +17,7 @@ An advanced, AI-powered system health management tool specifically designed for 
 - **Log Analysis**: System logs, error detection, and pattern recognition
 - **Asahi-Specific Checks**: 16K page size issues, m1n1 bootloader, Apple Silicon compatibility
 
-### 🤖 AI-Powered Analysis
+### AI-Powered Analysis
 - **Claude Integration**: Advanced system analysis using Anthropic's Claude
 - **OpenAI Support**: ChatGPT integration for recommendations
 - **Real-time Solutions**: Up-to-date fixes from community knowledge (2025)
@@ -25,7 +25,7 @@ An advanced, AI-powered system health management tool specifically designed for 
 - **Risk Assessment**: AI evaluates fix safety and impact
 - **Multi-Provider Fallback**: Automatic switching between AI services
 
-### 🛠️ Automated Repair System
+### Automated Repair System
 - **Smart Fixing**: Automated resolution of detected issues
 - **Safety First**: Comprehensive pre-flight checks and backups
 - **User Control**: Choose individual fixes or fix all
@@ -33,28 +33,28 @@ An advanced, AI-powered system health management tool specifically designed for 
 - **Risk Categorization**: Critical, high, medium, low severity fixes
 - **Dry-Run Mode**: Preview changes without executing them
 
-### ⏰ Intelligent Scheduling
+### Intelligent Scheduling
 - **Flexible Scheduling**: Cron-based task scheduling
 - **Automated Maintenance**: Regular health checks and fixes
 - **Background Operation**: Daemon mode for continuous monitoring
 - **Custom Schedules**: Hourly, daily, weekly, or custom intervals
 - **Systemd Integration**: Full service management
 
-### 🎨 Rich Terminal Interface
+### Rich Terminal Interface
 - **Beautiful UI**: Rich terminal interface with progress bars and tables
 - **Interactive Menus**: Easy navigation and selection
 - **Detailed Reports**: Comprehensive system health reports
 - **Export Capabilities**: JSON, HTML, and markdown report formats
 - **Real-time Progress**: Live updates during scans and fixes
 
-### 📊 Advanced Reporting
+### Advanced Reporting
 - **Executive Summaries**: High-level system health overview
 - **Detailed Analysis**: In-depth findings and recommendations
 - **Trend Analysis**: Historical data and performance trends
 - **Audit Logging**: Complete action history and security events
 - **Performance Metrics**: System resource usage tracking
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 
@@ -146,7 +146,7 @@ Advanced Options:
   --ai-provider NAME  Use specific AI provider (claude|openai)
 ```
 
-## ⚙️ Configuration
+## Configuration
 
 ### AI API Keys Setup
 
@@ -237,7 +237,7 @@ ASAHI_HEALER_DRY_RUN    # Enable dry-run mode (true/false)
 ASAHI_HEALER_LOG_LEVEL  # Logging level (DEBUG|INFO|WARNING|ERROR)
 ```
 
-## 🔧 Asahi Linux Specific Features
+## Asahi Linux Specific Features
 
 ### Apple Silicon Hardware Detection
 
@@ -253,7 +253,7 @@ ASAHI_HEALER_LOG_LEVEL  # Logging level (DEBUG|INFO|WARNING|ERROR)
 
 ### Common Issues Detected & Fixed
 
-#### 1. **16K Page Size Compatibility**
+#### 1. 16K Page Size Compatibility
 ```
 Issues Detected:
 • jemalloc incompatibility with 16K pages
@@ -266,7 +266,7 @@ Automated Fixes:
 • Update library paths and configurations
 ```
 
-#### 2. **Apple Silicon Hardware**
+#### 2. Apple Silicon Hardware
 ```
 Monitoring:
 • CPU thermal zones and throttling
@@ -280,7 +280,7 @@ Optimizations:
 • Performance scaling optimization
 ```
 
-#### 3. **Boot and Kernel Issues**
+#### 3. Boot and Kernel Issues
 ```
 Diagnostics:
 • m1n1 bootloader version and health
@@ -294,7 +294,7 @@ Fixes:
 • Repair boot configuration
 ```
 
-#### 4. **Network and WiFi**
+#### 4. Network and WiFi
 ```
 Asahi WiFi Stack:
 • Broadcom firmware status
@@ -308,7 +308,7 @@ Optimizations:
 • Optimize connection stability
 ```
 
-#### 5. **Storage and File Systems**
+#### 5. Storage and File Systems
 ```
 Dual-Boot Management:
 • APFS partition health monitoring
@@ -323,7 +323,7 @@ Maintenance:
 • Check file system integrity
 ```
 
-## 📊 Example Output
+## Example Output
 
 ### System Scan Results
 
@@ -334,10 +334,10 @@ Maintenance:
 ║                     for Asahi Linux                          ║
 ╚═══════════════════════════════════════════════════════════════╝
 
-🍎 Apple Silicon Mac System Health Management
-🤖 AI-Powered Analysis & Recommendations
+Apple Silicon Mac System Health Management
+AI-Powered Analysis & Recommendations
 
-🖥️  System Overview
+System Overview
 ┌────────────────┬──────────────────────────────────┐
 │ Hostname       │ macbook-asahi                    │
 │ Distribution   │ Fedora Asahi Remix 39            │
@@ -347,16 +347,16 @@ Maintenance:
 │ Uptime         │ 2d 14h 32m                      │
 └────────────────┴──────────────────────────────────┘
 
-🏥 System Health Summary
+System Health Summary
 ┌──────────────────────────────────────────────────────┐
-│ Memory: 🟢 Good (45.2%)                              │
-│ Disk: 🟡 Warning (78.1%)                            │
-│ Network: 🟢 Good                                     │
-│ Services: 🟢 Good (0 failed)                        │
-│ Thermal: 🟢 Good                                     │
+│ Memory: Good (45.2%)                              │
+│ Disk: Warning (78.1%)                            │
+│ Network: Good                                     │
+│ Services: Good (0 failed)                        │
+│ Thermal: Good                                     │
 └──────────────────────────────────────────────────────┘
 
-🚨 Issues Detected
+Issues Detected
 ├── CRITICAL (0)
 ├── HIGH (2)
 │   ├── Rust/jemalloc 16K Page Size Issue
@@ -374,17 +374,17 @@ Maintenance:
     └── Power Profile Optimization
         └── → Performance profile active, consider power-save mode
 
-📋 AI Recommendations Summary
+AI Recommendations Summary
 ┌──────────┬───────┬────────────────────────────────────────┐
 │ Severity │ Count │ Actions Available                      │
 ├──────────┼───────┼────────────────────────────────────────┤
-│ 🔴 Critical │   0   │ No critical issues found              │
-│ 🟠 High     │   2   │ Address within 24 hours               │
-│ 🟡 Medium   │   1   │ Address when convenient                │
-│ 🔵 Low      │   3   │ Optional improvements                  │
+│ Critical │   0   │ No critical issues found              │
+│ High     │   2   │ Address within 24 hours               │
+│ Medium   │   1   │ Address when convenient                │
+│ Low      │   3   │ Optional improvements                  │
 └──────────┴───────┴────────────────────────────────────────┘
 
-🤔 What would you like to do?
+What would you like to do?
 
   1. Fix all issues automatically
   2. Select individual fixes  
@@ -398,32 +398,32 @@ Enter your choice [1]:
 ### Detailed Fix Application
 
 ```
-🛠️  Applying Fixes...
+Applying Fixes...
 
-✅ Fix 1/6: Rust/jemalloc 16K Page Size Issue
+Fix 1/6: Rust/jemalloc 16K Page Size Issue
    ├── Creating backup... ✓
    ├── Removing system Rust packages... ✓
    ├── Installing rustup... ✓
    ├── Configuring Rust toolchain... ✓
    └── Verification: cargo --version ✓
 
-⚠️  Fix 2/6: Low Disk Space Warning  
+Fix 2/6: Low Disk Space Warning  
    ├── Cleaning package cache (2.3GB freed)... ✓
    ├── Rotating system logs (1.2GB freed)... ✓
    ├── Removing old kernels... ✓
    └── Final disk usage: 65.2% ✓
 
-🔧 Fix Results Summary
+Fix Results Summary
 ┌─────────────────────┬───────┐
 │ Total Fixes         │   6   │
-│ ✅ Successful        │   5   │
-│ ❌ Failed           │   0   │
-│ ⏭️  Skipped         │   1   │
+│ Successful        │   5   │
+│ Failed           │   0   │
+│ Skipped         │   1   │
 └─────────────────────┴───────┘
 
-💾 Backup created at: ~/.asahi_healer_backups/20241227_143052
-🔍 Verification: 5/5 fixes verified successfully
-⏱️  Total execution time: 3m 42s
+Backup created at: ~/.asahi_healer_backups/20241227_143052
+Verification: 5/5 fixes verified successfully
+Total execution time: 3m 42s
 
 All fixes applied successfully! 
 System health improved from "Fair" to "Good"
@@ -458,7 +458,7 @@ System health improved from "Fair" to "Good"
 }
 ```
 
-## 🛡️ Security Features
+## Security Features
 
 ### Multi-Layer Safety System
 
@@ -545,7 +545,7 @@ DANGEROUS_COMMANDS = [
 • Reporting: Local generation, optional AI enhancement
 ```
 
-## 🏗️ Technical Architecture
+## Technical Architecture
 
 ### Core Components
 
@@ -636,7 +636,7 @@ Fix Application:
   Rollback Time: 15-45 seconds
 ```
 
-## 📈 Advanced Usage Scenarios
+## Advanced Usage Scenarios
 
 ### 1. Automated Maintenance Setup
 
@@ -708,7 +708,7 @@ fi
 asahi-healer --fix-all --dry-run --severity low
 ```
 
-## 📊 Monitoring & Metrics
+## Monitoring & Metrics
 
 ### Health Metrics Dashboard
 
@@ -741,7 +741,7 @@ grep "performance" ~/.local/log/asahi_healer/performance.log | tail -20
 jq '.event_type' ~/.local/log/asahi_healer/audit.log | sort | uniq -c
 ```
 
-## 🚀 Performance Optimization
+## Performance Optimization
 
 ### Configuration Tuning
 
@@ -775,7 +775,7 @@ export ASAHI_HEALER_LOW_MEMORY=true
 export ASAHI_HEALER_AI_CACHE=true
 ```
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Common Issues
 
@@ -842,7 +842,7 @@ grep -E "slow|timeout|failed" ~/.local/log/asahi_healer/performance.log
 grep -E "(security|unauthorized|dangerous)" ~/.local/log/asahi_healer/audit.log
 ```
 
-## 📁 Complete Project Structure
+## Complete Project Structure
 
 ```
 asahi-ai-system-manager/
@@ -876,7 +876,7 @@ asahi-ai-system-manager/
 └── 📄 .gitignore              # Git ignore patterns
 ```
 
-## 🤝 Contributing
+## Contributing
 
 We welcome contributions from the community! Here's how you can help:
 
@@ -958,7 +958,7 @@ mypy core/ ui/ utils/
 - **Performance**: Be mindful of resource usage
 - **Documentation**: Document complex functions and classes
 
-## 🎯 Roadmap
+## Roadmap
 
 ### Version 1.1 (Q1 2025)
 - [ ] Web dashboard interface
@@ -981,22 +981,22 @@ mypy core/ ui/ utils/
 - [ ] Compliance checking frameworks
 - [ ] Enterprise management features
 
-## 📜 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ### MIT License Summary
 
 ```
-✅ Commercial use
-✅ Modification
-✅ Distribution  
-✅ Private use
-❌ Warranty
-❌ Liability
+Commercial use
+Modification
+Distribution  
+Private use
+No Warranty
+No Liability
 ```
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 ### Core Contributors
 - **Development Team**: System architecture and implementation
@@ -1024,7 +1024,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **[GitHub](https://github.com/)**: Code hosting and collaboration
 - **[Python Software Foundation](https://www.python.org/)**: Python language and ecosystem
 
-## 🐛 Bug Reports & Feature Requests
+## Bug Reports & Feature Requests
 
 ### Reporting Issues
 
@@ -1066,7 +1066,7 @@ For security vulnerabilities:
 - Provide detailed reproduction steps
 - Allow reasonable time for fixes before disclosure
 
-## 📞 Support & Community
+## Support & Community
 
 ### Getting Help
 
@@ -1093,7 +1093,7 @@ Enterprise support available for:
 
 Contact: enterprise@example.com
 
-## 🔗 Related Projects & Resources
+## Related Projects & Resources
 
 ### Asahi Linux Ecosystem
 - **[Asahi Linux](https://asahilinux.org/)** - Linux distribution for Apple Silicon
@@ -1115,7 +1115,7 @@ Contact: enterprise@example.com
 
 ---
 
-## 🚀 Quick Reference Card
+## Quick Reference Card
 
 ### Most Common Commands
 ```bash
@@ -1157,7 +1157,7 @@ asahi-healer --help
 
 ---
 
-**🍎 Made with ❤️ for the Asahi Linux community**
+**Made for the Asahi Linux community**
 
 *Bringing AI-powered system health management to Apple Silicon Macs running Linux*
 
