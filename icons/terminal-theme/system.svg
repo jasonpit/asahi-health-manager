@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <!-- Terminal background -->
+  <rect x="4" y="4" width="56" height="56" rx="6" fill="#000000" stroke="#00ff00" stroke-width="2"/>
+  
+  <!-- Terminal window controls -->
+  <circle cx="12" cy="12" r="2" fill="#00ff00" opacity="0.7"/>
+  <circle cx="20" cy="12" r="2" fill="#00ff00" opacity="0.5"/>
+  <circle cx="28" cy="12" r="2" fill="#00ff00" opacity="0.3"/>
+  
+  <!-- Terminal line -->
+  <line x1="8" y1="20" x2="56" y2="20" stroke="#00ff00" stroke-width="1" opacity="0.5"/>
+  
+  <!-- Gear/cog system icon -->
+  <g stroke="#00ff00" stroke-width="2" fill="none">
+    <!-- Main gear -->
+    <circle cx="32" cy="32" r="8"/>
+    <circle cx="32" cy="32" r="4" fill="#00ff00" opacity="0.3"/>
+    
+    <!-- Gear teeth -->
+    <g fill="#00ff00" opacity="0.8">
+      <rect x="31" y="22" width="2" height="4"/>
+      <rect x="31" y="38" width="2" height="4"/>
+      <rect x="22" y="31" width="4" height="2"/>
+      <rect x="38" y="31" width="4" height="2"/>
+      
+      <!-- Diagonal teeth -->
+      <rect x="26.5" y="25.5" width="3" height="2" transform="rotate(45 28 26.5)"/>
+      <rect x="34.5" y="25.5" width="3" height="2" transform="rotate(-45 36 26.5)"/>
+      <rect x="26.5" y="36.5" width="3" height="2" transform="rotate(-45 28 37.5)"/>
+      <rect x="34.5" y="36.5" width="3" height="2" transform="rotate(45 36 37.5)"/>
+    </g>
+  </g>
+  
+  <!-- CPU/Chip representation -->
+  <g stroke="#00ff00" stroke-width="1" fill="none" opacity="0.6">
+    <!-- Chip outline -->
+    <rect x="44" y="44" width="12" height="8"/>
+    <!-- Pins -->
+    <line x1="42" y1="46" x2="44" y2="46"/>
+    <line x1="42" y1="48" x2="44" y2="48"/>
+    <line x1="42" y1="50" x2="44" y2="50"/>
+    <line x1="56" y1="46" x2="58" y2="46"/>
+    <line x1="56" y1="48" x2="58" y2="48"/>
+    <line x1="56" y1="50" x2="58" y2="50"/>
+  </g>
+  
+  <!-- System monitor lines -->
+  <g stroke="#00ff00" stroke-width="1" opacity="0.7">
+    <!-- CPU usage graph -->
+    <path d="M8 45 L10 43 L12 44 L14 42 L16 45 L18 41 L20 44"/>
+    <!-- Memory usage -->
+    <path d="M8 50 L10 49 L12 48 L14 50 L16 47 L18 49 L20 48"/>
+  </g>
+  
+  <!-- Binary data stream -->
+  <g font-family="monospace" font-size="6" fill="#00ff00" opacity="0.4">
+    <text x="8" y="30">1010</text>
+    <text x="52" y="30">1100</text>
+    <text x="8" y="36">0101</text>
+    <text x="52" y="36">0011</text>
+  </g>
+  
+  <!-- Terminal prompt -->
+  <g font-family="monospace" font-size="8" fill="#00ff00" opacity="0.6">
+    <text x="8" y="56">$&gt; sudo systemctl</text>
+  </g>
+</svg>

@@ -76,6 +76,14 @@ class AsahiAppManager:
         self.installed_apps = set()
         self._detect_installed_apps()
         
+        # Initialize desktop integration
+        try:
+            from core.desktop_integration import DesktopIntegration
+            self.desktop_integration = DesktopIntegration()
+        except ImportError:
+            logger.warning("Desktop integration not available")
+            self.desktop_integration = None
+        
     def _initialize_apps_database(self) -> Dict[str, Application]:
         """Initialize the curated database of applications"""
         apps = [
@@ -726,7 +734,21 @@ class AsahiAppManager:
                 # Verify installation
                 if self._is_app_installed(app):
                     self.installed_apps.add(app_name)
-                    return True, f"Successfully installed {app.display_name}"
+                    
+                    # Create desktop entry if desktop integration is available
+                    desktop_msg = ""
+                    if self.desktop_integration:
+                        try:
+                            desktop_success = self.desktop_integration.create_desktop_entry(app)
+                            if desktop_success:
+                                desktop_msg = " Desktop launcher created."
+                            else:
+                                desktop_msg = " Warning: Desktop launcher creation failed."
+                        except Exception as e:
+                            logger.warning(f"Desktop integration failed for {app.display_name}: {e}")
+                            desktop_msg = " Warning: Desktop launcher creation failed."
+                    
+                    return True, f"Successfully installed {app.display_name}{desktop_msg}"
                 else:
                     return False, f"Installation completed but verification failed for {app.display_name}"
             else:
@@ -770,6 +792,36 @@ class AsahiAppManager:
             }
         
         return summary
+    
+    def create_desktop_entries_for_installed_apps(self) -> Dict[str, bool]:
+        """Create desktop entries for all installed applications"""
+        if not self.desktop_integration:
+            logger.warning("Desktop integration not available")
+            return {}
+        
+        results = {}
+        success_count = 0
+        
+        logger.info(f"Creating desktop entries for {len(self.installed_apps)} installed apps...")
+        
+        for app_name in self.installed_apps:
+            if app_name in self.apps_database:
+                app = self.apps_database[app_name]
+                try:
+                    success = self.desktop_integration.create_desktop_entry(app)
+                    results[app_name] = success
+                    if success:
+                        success_count += 1
+                except Exception as e:
+                    logger.error(f"Failed to create desktop entry for {app.display_name}: {e}")
+                    results[app_name] = False
+        
+        # Update desktop database
+        if success_count > 0:
+            self.desktop_integration.update_desktop_database()
+            logger.info(f"Created {success_count} desktop entries")
+        
+        return results
     
     def export_recommendations(self, output_file: Path) -> bool:
         """Export app recommendations to a JSON file"""

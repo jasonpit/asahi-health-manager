@@ -49,13 +49,14 @@ class AppManagerUI:
         self.console.print("3. [?] Search Applications")
         self.console.print("4. [#] View Installed Apps")
         self.console.print("5. [!] Quick Install Essentials")
-        self.console.print("6. [>] Export Recommendations")
-        self.console.print("7. [X] Exit")
+        self.console.print("6. [~] Create Desktop Launchers")
+        self.console.print("7. [>] Export Recommendations")
+        self.console.print("8. [X] Exit")
         self.console.print()
         
         choice = Prompt.ask(
             "Enter your choice",
-            choices=["1", "2", "3", "4", "5", "6", "7"],
+            choices=["1", "2", "3", "4", "5", "6", "7", "8"],
             default="1"
         )
         return choice
@@ -142,19 +143,19 @@ class AppManagerUI:
         
         # Allow selection for installation
         choice = Prompt.ask(
-            "Select an app (number) to install/view details, or 'b' to go back",
+            "Select app(s): single number (1), multiple (1,3,5), range (1-5), 'all', or 'b' to go back",
             default="b"
         )
         
         if choice.lower() == 'b':
             return
         
-        try:
-            app_index = int(choice) - 1
-            if 0 <= app_index < len(apps):
-                self.display_app_details(apps[app_index])
-        except (ValueError, IndexError):
-            self.console.print("[red]Invalid selection[/red]")
+        selected_apps = self._parse_selection(choice, apps)
+        if selected_apps:
+            if len(selected_apps) == 1:
+                self.display_app_details(selected_apps[0])
+            else:
+                self._handle_multiple_app_selection(selected_apps)
     
     def display_app_details(self, app: Application):
         """Display detailed information about an application"""
@@ -243,21 +244,21 @@ class AppManagerUI:
         self.console.print()
         
         choice = Prompt.ask(
-            "Select an app (number) to install, 'a' to install all, or 'b' to go back",
+            "Select app(s): single number (1), multiple (1,3,5), range (1-5), 'all', or 'b' to go back",
             default="b"
         )
         
         if choice.lower() == 'b':
             return
-        elif choice.lower() == 'a':
+        elif choice.lower() == 'all':
             self.batch_install_apps(recommendations)
         else:
-            try:
-                app_index = int(choice) - 1
-                if 0 <= app_index < len(recommendations):
-                    self.display_app_details(recommendations[app_index])
-            except (ValueError, IndexError):
-                self.console.print("[red]Invalid selection[/red]")
+            selected_apps = self._parse_selection(choice, recommendations)
+            if selected_apps:
+                if len(selected_apps) == 1:
+                    self.display_app_details(selected_apps[0])
+                else:
+                    self._handle_multiple_app_selection(selected_apps)
     
     def search_applications(self):
         """Search for applications"""
@@ -294,17 +295,25 @@ class AppManagerUI:
         self.console.print()
         
         choice = Prompt.ask(
-            "Select an app (number) to view details, or 'b' to go back",
+            "Select app(s): single number (1), multiple (1,3,5), range (1-5), 'all', or 'b' to go back",
             default="b"
         )
         
-        if choice.lower() != 'b':
-            try:
-                app_index = int(choice) - 1
-                if 0 <= app_index < len(results):
-                    self.display_app_details(results[app_index])
-            except (ValueError, IndexError):
-                self.console.print("[red]Invalid selection[/red]")
+        if choice.lower() == 'b':
+            return
+        elif choice.lower() == 'all':
+            available_results = [app for app in results if app.name not in self.app_manager.installed_apps]
+            if available_results:
+                self.batch_install_apps(available_results)
+            else:
+                self.console.print("[yellow]All search results are already installed[/yellow]")
+        else:
+            selected_apps = self._parse_selection(choice, results)
+            if selected_apps:
+                if len(selected_apps) == 1:
+                    self.display_app_details(selected_apps[0])
+                else:
+                    self._handle_multiple_app_selection(selected_apps)
     
     def display_installed_apps(self):
         """Display all installed applications"""
@@ -466,6 +475,242 @@ class AppManagerUI:
         except Exception as e:
             self.console.print(f"[red]Error launching theme manager: {e}[/red]")
     
+    def _parse_selection(self, choice: str, apps: List[Application]) -> List[Application]:
+        """Parse user selection and return list of selected apps"""
+        try:
+            selected_apps = []
+            
+            if ',' in choice:
+                # Multiple selections: 1,3,5
+                indices = [int(x.strip()) - 1 for x in choice.split(',')]
+                for idx in indices:
+                    if 0 <= idx < len(apps):
+                        selected_apps.append(apps[idx])
+                    else:
+                        self.console.print(f"[yellow]Invalid index: {idx + 1}[/yellow]")
+                        
+            elif '-' in choice:
+                # Range selection: 1-5
+                start, end = map(str.strip, choice.split('-'))
+                start_idx = int(start) - 1
+                end_idx = int(end) - 1
+                
+                if 0 <= start_idx <= end_idx < len(apps):
+                    selected_apps = apps[start_idx:end_idx + 1]
+                else:
+                    self.console.print(f"[red]Invalid range: {choice}[/red]")
+                    
+            else:
+                # Single selection: 1
+                idx = int(choice) - 1
+                if 0 <= idx < len(apps):
+                    selected_apps = [apps[idx]]
+                else:
+                    self.console.print(f"[red]Invalid selection: {choice}[/red]")
+                    
+        except ValueError:
+            self.console.print(f"[red]Invalid input format: {choice}[/red]")
+            
+        return selected_apps
+    
+    def _handle_multiple_app_selection(self, selected_apps: List[Application]):
+        """Handle installation of multiple selected apps"""
+        # Filter out already installed apps
+        available_apps = [app for app in selected_apps if app.name not in self.app_manager.installed_apps]
+        installed_apps = [app for app in selected_apps if app.name in self.app_manager.installed_apps]
+        
+        if installed_apps:
+            self.console.print(f"\n[yellow]Already installed ({len(installed_apps)} apps):[/yellow]")
+            for app in installed_apps:
+                self.console.print(f"  - [cyan]{app.display_name}[/cyan]")
+        
+        if not available_apps:
+            self.console.print("[green]All selected apps are already installed![/green]")
+            return
+        
+        self.console.print(f"\n[bold]Selected {len(available_apps)} apps to install:[/bold]")
+        
+        total_size = sum(app.size_mb for app in available_apps if app.size_mb > 0)
+        
+        table = Table(box=box.SIMPLE)
+        table.add_column("#", style="dim", width=3)
+        table.add_column("Application", style="cyan", width=25)
+        table.add_column("Category", style="yellow", width=15)
+        table.add_column("Size", justify="right", width=8)
+        
+        for i, app in enumerate(available_apps, 1):
+            size = f"{app.size_mb} MB" if app.size_mb > 0 else "N/A"
+            table.add_row(
+                str(i),
+                app.display_name,
+                app.category.value,
+                size
+            )
+        
+        self.console.print(table)
+        
+        if total_size > 0:
+            self.console.print(f"\n[dim]Total download size: ~{total_size} MB[/dim]")
+        
+        if Confirm.ask(f"\nInstall {len(available_apps)} applications?"):
+            self.batch_install_apps_with_summary(available_apps)
+    
+    def batch_install_apps_with_summary(self, apps: List[Application]):
+        """Install multiple applications with enhanced progress tracking"""
+        self.console.print(f"\n[bold]Installing {len(apps)} applications...[/bold]\n")
+        
+        success_count = 0
+        failed_apps = []
+        skipped_apps = []
+        
+        with Progress(
+            SpinnerColumn(),
+            TextColumn("[progress.description]{task.description}"),
+            BarColumn(),
+            TextColumn("[progress.percentage]{task.percentage:>3.0f}%"),
+            TextColumn("({task.completed}/{task.total})"),
+            console=self.console
+        ) as progress:
+            
+            main_task = progress.add_task(
+                "Overall progress...",
+                total=len(apps)
+            )
+            
+            for i, app in enumerate(apps, 1):
+                # Check if already installed (in case status changed)
+                if app.name in self.app_manager.installed_apps:
+                    skipped_apps.append(app)
+                    progress.console.print(f"[yellow][~] {app.display_name} already installed[/yellow]")
+                    progress.update(main_task, advance=1)
+                    continue
+                
+                app_task = progress.add_task(
+                    f"[{i}/{len(apps)}] Installing {app.display_name}...",
+                    total=100
+                )
+                
+                # Show what we're about to install
+                install_cmd = self.app_manager.get_installation_command(app)
+                progress.console.print(f"[dim]    Command: {install_cmd}[/dim]")
+                
+                success, message = self.app_manager.install_app(app.name, dry_run=False)
+                
+                if success:
+                    success_count += 1
+                    progress.console.print(f"[green][+] {app.display_name} installed successfully[/green]")
+                else:
+                    failed_apps.append((app, message))
+                    progress.console.print(f"[red][-] {app.display_name} failed: {message}[/red]")
+                
+                progress.update(app_task, completed=100)
+                progress.update(main_task, advance=1)
+        
+        # Enhanced summary
+        self.console.print(f"\n[bold]Installation Summary:[/bold]")
+        self.console.print(f"  [green]Successfully installed: {success_count}[/green]")
+        if skipped_apps:
+            self.console.print(f"  [yellow]Already installed: {len(skipped_apps)}[/yellow]")
+        if failed_apps:
+            self.console.print(f"  [red]Failed: {len(failed_apps)}[/red]")
+        
+        if success_count > 0:
+            self.console.print(f"\n[bold green]✓ {success_count} applications installed successfully![/bold green]")
+            
+        if skipped_apps:
+            self.console.print(f"\n[bold yellow]Skipped applications:[/bold yellow]")
+            for app in skipped_apps:
+                self.console.print(f"  - {app.display_name}")
+        
+        if failed_apps:
+            self.console.print(f"\n[bold red]Failed installations:[/bold red]")
+            for app, error in failed_apps:
+                self.console.print(f"  - {app.display_name}: {error}")
+        
+        self.console.print()
+    
+    def create_desktop_launchers(self):
+        """Create desktop launchers for all installed apps"""
+        self.console.print("\n[bold cyan]Create Desktop Launchers[/bold cyan]\n")
+        self.console.print("[dim]This will create searchable desktop entries for all installed applications[/dim]\n")
+        
+        # Show currently installed apps
+        installed = [
+            self.app_manager.apps_database[name]
+            for name in self.app_manager.installed_apps
+            if name in self.app_manager.apps_database
+        ]
+        
+        if not installed:
+            self.console.print("[yellow]No installed applications found to create launchers for[/yellow]")
+            return
+        
+        self.console.print(f"[bold]Found {len(installed)} installed applications:[/bold]")
+        
+        # Group by category for display
+        by_category = {}
+        for app in installed:
+            if app.category not in by_category:
+                by_category[app.category] = []
+            by_category[app.category].append(app)
+        
+        for category, apps in sorted(by_category.items(), key=lambda x: x[0].value):
+            self.console.print(f"\n[yellow]{category.value}:[/yellow]")
+            for app in sorted(apps, key=lambda x: x.display_name):
+                self.console.print(f"  - [cyan]{app.display_name}[/cyan]")
+        
+        self.console.print()
+        
+        if not Confirm.ask("Create desktop launchers for these applications?"):
+            return
+        
+        # Create desktop entries
+        self.console.print("\n[bold]Creating desktop launchers...[/bold]\n")
+        
+        with Progress(
+            SpinnerColumn(),
+            TextColumn("[progress.description]{task.description}"),
+            BarColumn(),
+            TextColumn("[progress.percentage]{task.percentage:>3.0f}%"),
+            console=self.console
+        ) as progress:
+            
+            task = progress.add_task("Creating desktop entries...", total=len(installed))
+            
+            results = self.app_manager.create_desktop_entries_for_installed_apps()
+            
+            success_count = sum(1 for success in results.values() if success)
+            failed_count = len(results) - success_count
+            
+            progress.update(task, completed=len(installed))
+        
+        # Summary
+        self.console.print(f"\n[bold]Desktop Launcher Creation Summary:[/bold]")
+        self.console.print(f"  [green]Successfully created: {success_count}[/green]")
+        if failed_count > 0:
+            self.console.print(f"  [red]Failed: {failed_count}[/red]")
+        
+        if success_count > 0:
+            self.console.print(f"\n[bold green]✓ {success_count} desktop launchers created![/bold green]")
+            self.console.print("\n[bold]You can now:[/bold]")
+            self.console.print("  - Search for these apps in your application launcher")
+            self.console.print("  - Pin them to your taskbar/dock")
+            self.console.print("  - Find them in your applications menu")
+            
+            # Desktop environment specific instructions
+            self.console.print(f"\n[bold]How to find your new launchers:[/bold]")
+            self.console.print("  • Press Super/Meta key and start typing the app name")
+            self.console.print("  • Check your applications menu (usually organized by category)")
+            self.console.print("  • Right-click apps in the menu to pin to favorites/taskbar")
+        
+        if failed_count > 0:
+            failed_apps = [name for name, success in results.items() if not success]
+            self.console.print(f"\n[bold red]Failed to create launchers for:[/bold red]")
+            for app_name in failed_apps:
+                if app_name in self.app_manager.apps_database:
+                    app = self.app_manager.apps_database[app_name]
+                    self.console.print(f"  - {app.display_name}")
+    
     def run(self):
         """Main UI loop"""
         try:
@@ -488,9 +733,12 @@ class AppManagerUI:
                     self.quick_install_essentials()
                     Prompt.ask("\nPress Enter to continue")
                 elif choice == "6":
-                    self.export_recommendations()
+                    self.create_desktop_launchers()
                     Prompt.ask("\nPress Enter to continue")
                 elif choice == "7":
+                    self.export_recommendations()
+                    Prompt.ask("\nPress Enter to continue")
+                elif choice == "8":
                     self.console.print("\n[cyan]Thank you for using Asahi App Manager![/cyan]")
                     break
                     

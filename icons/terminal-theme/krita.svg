@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <!-- Terminal background -->
+  <rect x="4" y="4" width="56" height="56" rx="6" fill="#000000" stroke="#00ff00" stroke-width="2"/>
+  
+  <!-- Terminal window controls -->
+  <circle cx="12" cy="12" r="2" fill="#00ff00" opacity="0.7"/>
+  <circle cx="20" cy="12" r="2" fill="#00ff00" opacity="0.5"/>
+  <circle cx="28" cy="12" r="2" fill="#00ff00" opacity="0.3"/>
+  
+  <!-- Terminal line -->
+  <line x1="8" y1="20" x2="56" y2="20" stroke="#00ff00" stroke-width="1" opacity="0.5"/>
+  
+  <!-- Digital brush/painting -->
+  <g stroke="#00ff00" stroke-width="2" fill="#00ff00">
+    <!-- Canvas -->
+    <rect x="16" y="24" width="32" height="24" fill="none" opacity="0.7"/>
+    
+    <!-- Brush stroke -->
+    <path d="M20 28 Q24 26 28 30 Q32 34 36 32 Q40 30 44 34" fill="none" opacity="0.9"/>
+    <path d="M22 32 Q26 30 30 34 Q34 38 38 36" fill="none" opacity="0.8"/>
+    
+    <!-- Paint splatters -->
+    <circle cx="24" cy="40" r="1" opacity="0.8"/>
+    <circle cx="40" cy="42" r="1.5" opacity="0.6"/>
+    <circle cx="32" cy="44" r="1" opacity="0.7"/>
+  </g>
+  
+  <!-- Digital art tools -->
+  <g stroke="#00ff00" stroke-width="1" fill="#00ff00">
+    <!-- Brush -->
+    <path d="M48 24 L52 28 L50 30 L46 26 Z" opacity="0.8"/>
+    <line x1="46" y1="26" x2="44" y2="24" opacity="0.6"/>
+    
+    <!-- Palette -->
+    <circle cx="8" cy="32" r="2" opacity="0.7"/>
+    <circle cx="8" cy="36" r="2" opacity="0.5"/>
+    <circle cx="8" cy="40" r="2" opacity="0.8"/>
+  </g>
+  
+  <!-- Layer panel simulation -->
+  <g fill="#00ff00" opacity="0.5">
+    <rect x="50" y="32" width="8" height="2"/>
+    <rect x="50" y="35" width="6" height="2"/>
+    <rect x="50" y="38" width="8" height="2"/>
+    <rect x="50" y="41" width="4" height="2"/>
+  </g>
+  
+  <!-- Color picker -->
+  <g stroke="#00ff00" stroke-width="1" opacity="0.6">
+    <circle cx="10" cy="26" r="3" fill="none"/>
+    <circle cx="10" cy="26" r="1" fill="#00ff00"/>
+  </g>
+  
+  <!-- Digital art creation process -->
+  <g font-family="monospace" fill="#00ff00" opacity="0.6">
+    <text x="16" y="52" font-size="6">Resolution: 4K</text>
+  </g>
+  
+  <!-- Terminal prompt -->
+  <g font-family="monospace" font-size="8" fill="#00ff00" opacity="0.6">
+    <text x="8" y="56">$> krita artwork.kra</text>
+  </g>
+</svg>

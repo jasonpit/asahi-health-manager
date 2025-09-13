@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <!-- Terminal background -->
+  <rect x="4" y="4" width="56" height="56" rx="6" fill="#000000" stroke="#00ff00" stroke-width="2"/>
+  
+  <!-- Terminal window controls -->
+  <circle cx="12" cy="12" r="2" fill="#00ff00" opacity="0.7"/>
+  <circle cx="20" cy="12" r="2" fill="#00ff00" opacity="0.5"/>
+  <circle cx="28" cy="12" r="2" fill="#00ff00" opacity="0.3"/>
+  
+  <!-- Terminal line -->
+  <line x1="8" y1="20" x2="56" y2="20" stroke="#00ff00" stroke-width="1" opacity="0.5"/>
+  
+  <!-- Game controller outline -->
+  <g stroke="#00ff00" stroke-width="2" fill="none">
+    <!-- Main controller body -->
+    <path d="M16 30 Q12 28 12 32 L12 40 Q12 44 16 44 L20 44 Q22 44 22 42 L22 38 Q22 36 24 36 L40 36 Q42 36 42 38 L42 42 Q42 44 44 44 L48 44 Q52 44 52 40 L52 32 Q52 28 48 30 L16 30"/>
+  </g>
+  
+  <!-- D-pad -->
+  <g stroke="#00ff00" stroke-width="1.5" fill="#00ff00" opacity="0.8">
+    <!-- Horizontal bar -->
+    <rect x="16" y="35" width="6" height="2"/>
+    <!-- Vertical bar -->
+    <rect x="18" y="33" width="2" height="6"/>
+  </g>
+  
+  <!-- Action buttons -->
+  <g fill="#00ff00">
+    <!-- A button -->
+    <circle cx="44" cy="34" r="2" opacity="0.9"/>
+    <text x="44" y="37" font-family="monospace" font-size="6" text-anchor="middle" fill="#000000">A</text>
+    <!-- B button -->
+    <circle cx="48" cy="38" r="2" opacity="0.7"/>
+    <text x="48" y="41" font-family="monospace" font-size="6" text-anchor="middle" fill="#000000">B</text>
+  </g>
+  
+  <!-- Pixel art character -->
+  <g fill="#00ff00" opacity="0.6">
+    <!-- Simple 8-bit style character -->
+    <rect x="29" y="26" width="2" height="2"/> <!-- head -->
+    <rect x="28" y="28" width="4" height="2"/> <!-- body -->
+    <rect x="27" y="30" width="2" height="2"/> <!-- left arm -->
+    <rect x="33" y="30" width="2" height="2"/> <!-- right arm -->
+    <rect x="29" y="30" width="2" height="4"/> <!-- torso -->
+    <rect x="28" y="34" width="2" height="2"/> <!-- left leg -->
+    <rect x="32" y="34" width="2" height="2"/> <!-- right leg -->
+  </g>
+  
+  <!-- Game elements -->
+  <g stroke="#00ff00" stroke-width="1" fill="none" opacity="0.4">
+    <!-- Pause symbol -->
+    <rect x="8" y="45" width="1" height="4"/>
+    <rect x="10" y="45" width="1" height="4"/>
+    
+    <!-- Fast forward -->
+    <path d="M54 45 L56 47 L54 49"/>
+    <path d="M56 45 L58 47 L56 49"/>
+  </g>
+  
+  <!-- Terminal prompt -->
+  <g font-family="monospace" font-size="8" fill="#00ff00" opacity="0.6">
+    <text x="8" y="56">$&gt; ./game --start</text>
+  </g>
+</svg>

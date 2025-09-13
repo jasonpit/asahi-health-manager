@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <!-- Terminal background -->
+  <rect x="4" y="4" width="56" height="56" rx="6" fill="#000000" stroke="#00ff00" stroke-width="2"/>
+  
+  <!-- Terminal window controls -->
+  <circle cx="12" cy="12" r="2" fill="#00ff00" opacity="0.7"/>
+  <circle cx="20" cy="12" r="2" fill="#00ff00" opacity="0.5"/>
+  <circle cx="28" cy="12" r="2" fill="#00ff00" opacity="0.3"/>
+  
+  <!-- Terminal line -->
+  <line x1="8" y1="20" x2="56" y2="20" stroke="#00ff00" stroke-width="1" opacity="0.5"/>
+  
+  <!-- Vim logo shape -->
+  <g fill="#00ff00" stroke="#00ff00" stroke-width="2">
+    <!-- V shape -->
+    <path d="M20 26 L32 46 L44 26" fill="none" opacity="0.9"/>
+    <!-- IM letters -->
+    <path d="M16 26 L16 46 M16 36 L22 26 L22 46" fill="none" opacity="0.8"/>
+    <path d="M46 26 L46 46 M46 26 Q50 26 50 30 Q50 34 46 34 M46 34 Q52 34 52 38 Q52 42 46 42" fill="none" opacity="0.8"/>
+  </g>
+  
+  <!-- Vim command mode -->
+  <g font-family="monospace" fill="#00ff00">
+    <!-- Command line -->
+    <text x="8" y="52" font-size="8" opacity="0.8">:</text>
+    <rect x="12" y="46" width="40" height="8" fill="none" stroke="#00ff00" stroke-width="1" opacity="0.5"/>
+    
+    <!-- Mode indicator -->
+    <text x="14" y="51" font-size="6" opacity="0.7">-- INSERT --</text>
+  </g>
+  
+  <!-- Editor content simulation -->
+  <g fill="#00ff00" opacity="0.6">
+    <rect x="8" y="24" width="16" height="1"/>
+    <rect x="8" y="26" width="20" height="1"/>
+    <rect x="8" y="28" width="12" height="1"/>
+    <rect x="8" y="30" width="24" height="1"/>
+  </g>
+  
+  <!-- Cursor -->
+  <rect x="32" y="30" width="1" height="8" fill="#00ff00">
+    <animate attributeName="opacity" values="1;0;1" dur="1s" repeatCount="indefinite"/>
+  </rect>
+  
+  <!-- Terminal prompt -->
+  <g font-family="monospace" font-size="8" fill="#00ff00" opacity="0.6">
+    <text x="8" y="56">$> vim file.txt</text>
+  </g>
+</svg>
