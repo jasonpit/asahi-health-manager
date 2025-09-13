@@ -485,14 +485,14 @@ class TerminalUI:
             high_count = summary.get('high_priority_issues_count', 0)
             
             if critical_count > 0:
-                self.console.print(f"🚨 {critical_count} critical issues require immediate attention", style="red")
+                self.console.print(f"[!] {critical_count} critical issues require immediate attention", style="red")
             if high_count > 0:
-                self.console.print(f"⚠️  {high_count} high-priority issues found", style="orange1")
+                self.console.print(f"[!] {high_count} high-priority issues found", style="orange1")
             
             # Key findings
             key_findings = summary.get('key_findings', [])
             if key_findings:
-                self.console.print("\n📝 Key Findings:", style="bold")
+                self.console.print("\nKey Findings:", style="bold")
                 for finding in key_findings[:5]:
                     self.console.print(f"  • {finding}")
         
@@ -532,7 +532,7 @@ class TerminalUI:
             total = rec_data.get('total_count', 0)
             by_severity = rec_data.get('by_severity', {})
             
-            self.console.print(f"\n📋 {total} recommendations generated", style="bold")
+            self.console.print(f"\n{total} recommendations generated", style="bold")
             
             if by_severity:
                 for severity, count in by_severity.items():
@@ -555,7 +555,7 @@ class TerminalUI:
                 continue
                 
             category_title = category.replace('_', ' ').title()
-            self.console.print(f"\n🔍 {category_title}:", style="bold")
+            self.console.print(f"\n{category_title}:", style="bold")
             
             for finding in findings[:3]:  # Show first 3 findings per category
                 issue = finding.get('issue', 'Unknown Issue')

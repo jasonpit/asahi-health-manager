@@ -126,7 +126,7 @@ asahi-healer --dry-run --fix-all
 asahi-healer --help
 ```
 
-## 📋 Complete Command Reference
+## Complete Command Reference
 
 ```bash
 asahi-healer [OPTIONS]
@@ -295,23 +295,23 @@ asahi-healer --apps
 
 ### Theme Presets
 
-#### 🌙 **Modern Dark**
+#### **Modern Dark**
 - Nordic theme + Papirus icons + Bibata cursors + Fira Code font
 - Perfect for developers and dark theme lovers
 
-#### 🎨 **Material Design**
+#### **Material Design**
 - Adapta theme + Tela icons + Capitaine cursors + JetBrains Mono
 - Google Material Design aesthetic
 
-#### ☀️ **Minimal Light**
+#### **Minimal Light**
 - Arc theme + La Capitaine icons + Inter font + Nordic wallpapers
 - Clean and professional light theme
 
-#### 💻 **Developer Setup**
+#### **Developer Setup**
 - Nordic theme + all coding fonts + development-optimized configuration
 - Complete setup for programming
 
-#### 🍭 **KDE Candy** (KDE Only)
+#### **KDE Candy** (KDE Only)
 - Sweet theme + Candy icons + Oreo cursors + colorful wallpapers
 - Fun and colorful for KDE Plasma users
 

@@ -306,12 +306,12 @@ class ConfigManager:
     async def setup_wizard(self) -> bool:
         """Interactive setup wizard"""
         try:
-            print("🚀 Asahi System Healer Configuration Setup")
+            print("Asahi System Healer Configuration Setup")
             print("==========================================")
             print()
             
             # API Configuration
-            print("📡 API Configuration")
+            print("API Configuration")
             print("-------------------")
             
             claude_key = input("Claude API Key (optional): ").strip()
@@ -323,12 +323,12 @@ class ConfigManager:
                 self.api_config.openai_api_key = openai_key
             
             if not claude_key and not openai_key:
-                print("⚠️  No API keys provided - AI features will be disabled")
+                print("[!] No API keys provided - AI features will be disabled")
             
             print()
             
             # Scan Configuration
-            print("🔍 Scan Configuration")
+            print("Scan Configuration")
             print("--------------------")
             
             deep_scan = input("Enable deep system scanning? (y/N): ").lower().strip()
@@ -340,7 +340,7 @@ class ConfigManager:
             print()
             
             # Fix Configuration
-            print("🛠️  Fix Configuration")
+            print("Fix Configuration")
             print("--------------------")
             
             auto_fix = input("Enable automatic fixing of low-risk issues? (y/N): ").lower().strip()
@@ -387,33 +387,33 @@ class ConfigManager:
             
             # Save configuration
             if await self.save():
-                print("✅ Configuration saved successfully!")
+                print("[+] Configuration saved successfully!")
                 
                 # Validate configuration
                 validation = self.validate_config()
                 if validation['warnings']:
-                    print("\n⚠️  Configuration Warnings:")
+                    print("\n[!] Configuration Warnings:")
                     for warning in validation['warnings']:
                         print(f"  • {warning}")
                 
                 if validation['errors']:
-                    print("\n❌ Configuration Errors:")
+                    print("\n[!] Configuration Errors:")
                     for error in validation['errors']:
                         print(f"  • {error}")
                 
-                print(f"\n📁 Configuration saved to: {self.config_file}")
-                print("🔧 You can edit this file manually or run the setup wizard again.")
+                print(f"\nConfiguration saved to: {self.config_file}")
+                print("You can edit this file manually or run the setup wizard again.")
                 
                 return validation['valid']
             else:
-                print("❌ Failed to save configuration")
+                print("[-] Failed to save configuration")
                 return False
                 
         except KeyboardInterrupt:
-            print("\n\n👋 Setup cancelled")
+            print("\n\nSetup cancelled")
             return False
         except Exception as e:
-            print(f"\n❌ Setup failed: {e}")
+            print(f"\n[-] Setup failed: {e}")
             return False
     
     def _get_config_readme(self) -> str:

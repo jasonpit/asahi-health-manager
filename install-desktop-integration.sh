@@ -48,7 +48,7 @@ elif [ "$DESKTOP_SESSION" ]; then
     DE="$DESKTOP_SESSION"
 fi
 
-echo -e "${GREEN}✓ Desktop integration installed successfully!${NC}"
+echo -e "${GREEN}[+] Desktop integration installed successfully!${NC}"
 echo
 echo -e "${BLUE}How to access Asahi App Manager:${NC}"
 echo
@@ -95,15 +95,15 @@ echo -e "${GREEN}Right-click the app icon for quick access to these features!${N
 echo
 echo -e "${YELLOW}Testing installation...${NC}"
 if [ -f ~/.local/share/applications/asahi-app-manager.desktop ]; then
-    echo -e "${GREEN}✓ Desktop entry created successfully${NC}"
+    echo -e "${GREEN}[+] Desktop entry created successfully${NC}"
 else
-    echo -e "${RED}✗ Failed to create desktop entry${NC}"
+    echo -e "${RED}[-] Failed to create desktop entry${NC}"
 fi
 
 if [ -f ~/.local/share/icons/hicolor/scalable/apps/asahi-app-manager.svg ]; then
-    echo -e "${GREEN}✓ Icon installed successfully${NC}"
+    echo -e "${GREEN}[+] Icon installed successfully${NC}"
 else
-    echo -e "${RED}✗ Failed to install icon${NC}"
+    echo -e "${RED}[-] Failed to install icon${NC}"
 fi
 
 echo

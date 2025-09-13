@@ -615,7 +615,7 @@ class AppManagerUI:
             self.console.print(f"  [red]Failed: {len(failed_apps)}[/red]")
         
         if success_count > 0:
-            self.console.print(f"\n[bold green]✓ {success_count} applications installed successfully![/bold green]")
+            self.console.print(f"\n[bold green][+] {success_count} applications installed successfully![/bold green]")
             
         if skipped_apps:
             self.console.print(f"\n[bold yellow]Skipped applications:[/bold yellow]")
@@ -691,7 +691,7 @@ class AppManagerUI:
             self.console.print(f"  [red]Failed: {failed_count}[/red]")
         
         if success_count > 0:
-            self.console.print(f"\n[bold green]✓ {success_count} desktop launchers created![/bold green]")
+            self.console.print(f"\n[bold green][+] {success_count} desktop launchers created![/bold green]")
             self.console.print("\n[bold]You can now:[/bold]")
             self.console.print("  - Search for these apps in your application launcher")
             self.console.print("  - Pin them to your taskbar/dock")

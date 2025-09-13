@@ -202,7 +202,7 @@ show_instructions() {
     echo
     echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
     echo
-    info "🚀 Getting Started:"
+    info "Getting Started:"
     echo
     echo "  1. Run a system scan:"
     echo "     asahi-healer --scan"
@@ -216,14 +216,14 @@ show_instructions() {
     echo "  4. View help:"
     echo "     asahi-healer --help"
     echo
-    info "📁 Important Locations:"
+    info "Important Locations:"
     echo
     echo "  Application:    $INSTALL_DIR"
     echo "  Configuration:  $CONFIG_DIR"
     echo "  Logs:          $HOME/.local/log/asahi_healer"
     echo "  Backups:       $HOME/.asahi_healer_backups"
     echo
-    info "🔧 Configuration:"
+    info "Configuration:"
     echo
     echo "  Run the setup wizard anytime:"
     echo "     asahi-healer --setup"
@@ -231,7 +231,7 @@ show_instructions() {
     echo "  Edit configuration file:"
     echo "     nano $CONFIG_DIR/config.yaml"
     echo
-    info "🤖 AI Features:"
+    info "AI Features:"
     echo
     echo "  To enable AI-powered analysis, set your API keys:"
     echo "     export CLAUDE_API_KEY=\"your-claude-key\""
@@ -239,7 +239,7 @@ show_instructions() {
     echo
     echo "  Or add them to your shell configuration (~/.bashrc, ~/.zshrc)"
     echo
-    warning "⚠️  Important Security Notes:"
+    warning "Important Security Notes:"
     echo
     echo "  • Always review fixes before applying them"
     echo "  • Backups are created automatically before changes"
@@ -248,7 +248,7 @@ show_instructions() {
     echo
     echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
     echo
-    success "Happy system healing! 🩺✨"
+    success "Happy system healing!"
 }
 
 # Uninstall function

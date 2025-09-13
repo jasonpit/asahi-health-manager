@@ -9,50 +9,50 @@ An advanced, AI-powered system health management tool specifically designed for 
 [![Audio Support](https://img.shields.io/badge/Audio-Diagnostics-purple.svg)](#audio-management)
 [![Software Manager](https://img.shields.io/badge/Software-Manager-orange.svg)](#software-management)
 
-## 🌟 Complete Feature Overview
+## Complete Feature Overview
 
-### 🏥 **Core System Health Management**
+### **Core System Health Management**
 - **Comprehensive Scanning**: OS health, hardware status, thermal monitoring
 - **AI-Powered Analysis**: Claude & OpenAI integration with intelligent recommendations
 - **Automated Repair**: Safe, reversible fixes with comprehensive backup system
 - **Real-time Monitoring**: Daemon mode with systemd integration
 - **Rich Terminal UI**: Beautiful interface with progress bars and interactive menus
 
-### 📦 **Software Management Suite** 
+### **Software Management Suite** 
 - **Interactive Software Installer**: Popular software catalog with one-click installation
 - **Repository Management**: RPM Fusion, Flathub, COPR, and custom repos
 - **User-Configurable Catalog**: YAML-based software definitions users can easily modify
 - **Batch Installation**: Install multiple packages with dependency resolution
 - **Quick Setup Profiles**: Essential, Developer, Content Creator, and custom profiles
 
-### 🔊 **Audio Diagnostics & Management**
+### **Audio Diagnostics & Management**
 - **Apple Silicon Audio Support**: Native MacBook Pro/Air audio hardware detection
 - **PipeWire Integration**: Advanced configuration and troubleshooting
 - **Driver Management**: Apple-specific audio driver (snd_soc_macaudio) monitoring
 - **Audio Testing Suite**: Speaker tests, microphone diagnostics, device verification
 - **Performance Optimization**: Low-latency configuration for audio production
 
-### 🔧 **Kernel & Performance Tuning**
+### **Kernel & Performance Tuning**
 - **Asahi Kernel Management**: Kernel information, updates, and optimization
 - **Real-time Audio Setup**: Performance tuning for audio production (no RT kernel needed)
 - **System Optimization**: CPU governor, I/O scheduler, memory management
 - **Boot Configuration**: Safe kernel parameter management
 - **Performance Monitoring**: Resource usage tracking and optimization recommendations
 
-### 🤖 **Interactive API Key Management**
+### **Interactive API Key Management**
 - **Secure Local Storage**: Base64-encoded key storage with proper file permissions
 - **Interactive Setup Wizard**: Step-by-step AI provider configuration
 - **Connection Testing**: Real-time API connectivity verification
 - **Provider Selection**: Support for Claude (Anthropic) and OpenAI with fallback
 - **Usage Guidance**: Cost estimates and best practices
 
-### 🖥️ **Unified Main Menu System**
+### **Unified Main Menu System**
 - **Single Interface**: Access all features from one comprehensive menu
 - **Real-time Status**: Live system metrics and health indicators
 - **Interactive Navigation**: Rich TUI with color-coded status and progress indicators
 - **Feature Integration**: Seamless access to all subsystems and tools
 
-## 🚀 Installation & Setup
+## Installation & Setup
 
 ### One-Command Installation
 ```bash
@@ -74,7 +74,7 @@ asahi-healer --setup-ai
 asahi-menu
 ```
 
-## 🎯 Usage Examples
+## Usage Examples
 
 ### Main Menu System
 ```bash
@@ -143,7 +143,7 @@ python3 /home/jason/api_key_manager_fixed.py
 # - Local encrypted storage
 ```
 
-## 🛠️ Detailed Component Documentation
+## Detailed Component Documentation
 
 ### System Scanner Capabilities
 - **OS Health**: Memory usage, disk space, kernel status, boot integrity
@@ -191,7 +191,7 @@ software:
 - **Power Management**: Battery optimization, thermal management
 - **Boot Safety**: Careful kernel parameter management with rollback support
 
-## 📊 System Status Dashboard
+## System Status Dashboard
 
 When you launch the main menu, you'll see:
 
@@ -210,16 +210,16 @@ When you launch the main menu, you'll see:
 ╰──────────────────────────────────────────────────────────────────────────────╯
 
 ╭───────────────────────────────── Main Menu ──────────────────────────────────╮
-│   1      🏥 System Health        Run full system scan and analysis           │
-│   2      🔧 Auto Fix Issues      Automatically fix detected problems         │
-│   5      📦 Software Manager     Install popular software and repos          │
-│   8      🤖 AI Configuration     Setup Claude/OpenAI API keys                │
-│   16     🔊 Audio Manager        Diagnose and fix audio issues               │
-│   17     🔧 Kernel Manager       Performance tuning and optimization         │
+│   1       System Health          Run full system scan and analysis           │
+│   2       Auto Fix Issues        Automatically fix detected problems         │
+│   5       Software Manager       Install popular software and repos          │
+│   8       AI Configuration       Setup Claude/OpenAI API keys                │
+│   16      Audio Manager          Diagnose and fix audio issues               │
+│   17      Kernel Manager         Performance tuning and optimization         │
 ╰──────────────────────────────────────────────────────────────────────────────╯
 ```
 
-## ⚙️ Configuration Management
+## Configuration Management
 
 ### Main Configuration File
 ```yaml
@@ -264,7 +264,7 @@ performance:
 # Easy to maintain and extend
 ```
 
-## 🔧 Troubleshooting & Support
+## Troubleshooting & Support
 
 ### Common Issues & Solutions
 
@@ -307,37 +307,37 @@ python3 /home/jason/main_menu_system.py --debug
 tail -f ~/.local/log/asahi_healer/asahi_healer.log
 ```
 
-## 📁 Complete Project Structure
+## Complete Project Structure
 
 ```
 asahi-ai-system-manager/
-├── 📄 asahi_healer.py              # Main system healer entry point
-├── 📄 main_menu_system.py          # Comprehensive main menu interface
-├── 📄 software_manager.py          # Software installation and management
-├── 📄 software_ui.py               # Software manager user interface
-├── 📄 asahi_audio_manager.py       # Audio diagnostics and management
-├── 📄 api_key_manager_fixed.py     # Interactive API key management
-├── 📄 test_api_standalone.py       # API connectivity testing
-├── 📁 core/                        # Core system modules
-│   ├── 🔍 system_scanner.py        # System health scanning
-│   ├── 🤖 ai_integration.py        # AI API integration
-│   ├── 💡 recommendation_engine.py # AI-powered recommendations
-│   ├── 🔧 auto_fixer.py           # Automated repair system
-│   └── ⏰ scheduler.py             # Task scheduling
-├── 📁 ui/                         # User interface components
-│   └── 🖥️ terminal_ui.py          # Rich terminal interface
-├── 📁 utils/                      # Utility modules
-│   ├── ⚙️ config_manager.py       # Configuration management
-│   └── 📝 logger.py               # Comprehensive logging
-├── 📁 scanners/                   # Specialized scanners
-├── 📁 fixers/                     # Issue-specific fixers
-├── 📄 requirements.txt            # Python dependencies
-├── 📄 install.sh                  # Automated installer
-├── 📄 README.md                   # This comprehensive guide
-└── 📄 LICENSE                     # MIT License
+├── asahi_healer.py              # Main system healer entry point
+├── main_menu_system.py          # Comprehensive main menu interface
+├── software_manager.py          # Software installation and management
+├── software_ui.py               # Software manager user interface
+├── asahi_audio_manager.py       # Audio diagnostics and management
+├── api_key_manager_fixed.py     # Interactive API key management
+├── test_api_standalone.py       # API connectivity testing
+├── core/                        # Core system modules
+│   ├── system_scanner.py        # System health scanning
+│   ├── ai_integration.py        # AI API integration
+│   ├── recommendation_engine.py # AI-powered recommendations
+│   ├── auto_fixer.py           # Automated repair system
+│   └── scheduler.py             # Task scheduling
+├── ui/                         # User interface components
+│   └── terminal_ui.py          # Rich terminal interface
+├── utils/                      # Utility modules
+│   ├── config_manager.py       # Configuration management
+│   └── logger.py               # Comprehensive logging
+├── scanners/                   # Specialized scanners
+├── fixers/                     # Issue-specific fixers
+├── requirements.txt            # Python dependencies
+├── install.sh                  # Automated installer
+├── README.md                   # This comprehensive guide
+└── LICENSE                     # MIT License
 ```
 
-## 🛡️ Security & Safety Features
+## Security & Safety Features
 
 ### Multi-Layer Protection
 - **Pre-flight Checks**: Resource availability, permission validation, conflict detection
@@ -352,7 +352,7 @@ asahi-ai-system-manager/
 - **Secure Storage**: API keys stored with base64 encoding and proper file permissions
 - **Optional AI**: System works fully without AI integration if preferred
 
-## 📈 Performance Characteristics
+## Performance Characteristics
 
 ### System Impact
 - **Memory Usage**: 50-150MB during operation
@@ -367,7 +367,7 @@ asahi-ai-system-manager/
 - **Fix Application**: 30 seconds - 3 minutes (depends on complexity)
 - **Backup Creation**: 10-30 seconds
 
-## 🎯 Advanced Usage Scenarios
+## Advanced Usage Scenarios
 
 ### Development Environment Setup
 ```bash
@@ -401,7 +401,7 @@ asahi-healer --schedule daily
 # Add your own software definitions and repositories
 ```
 
-## 🚀 Future Development Roadmap
+## Future Development Roadmap
 
 ### Version 1.1 (Current)
 - ✅ Comprehensive main menu system
@@ -424,7 +424,7 @@ asahi-healer --schedule daily
 - [ ] Advanced security scanning
 - [ ] Enterprise features
 
-## 🤝 Contributing
+## Contributing
 
 We welcome contributions! Here's how you can help:
 
@@ -445,7 +445,7 @@ pip install -r requirements.txt
 5. **Testing**: Cross-hardware testing, edge case handling
 6. **Documentation**: Guides, tutorials, troubleshooting
 
-## 📞 Support & Community
+## Support & Community
 
 ### Getting Help
 - **Documentation**: This comprehensive README
@@ -458,7 +458,7 @@ pip install -r requirements.txt
 - **Reddit**: r/AsahiLinux
 - **GitHub Discussions**: Feature ideas and Q&A
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 ### Core Technologies
 - **[Asahi Linux](https://asahilinux.org/)**: Amazing work bringing Linux to Apple Silicon
@@ -471,13 +471,13 @@ pip install -r requirements.txt
 - **Alyssa Rosenzweig (@alyssa)**: GPU driver development
 - **Asahi Linux Community**: Testing, feedback, and continuous support
 
-## 📜 License
+## License
 
 This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
 
 ---
 
-## 🍎 Made with ❤️ for the Asahi Linux Community
+## Made with Love for the Asahi Linux Community
 
 *Bringing comprehensive system management, AI-powered analysis, and professional audio support to Apple Silicon Macs running Linux.*
 
