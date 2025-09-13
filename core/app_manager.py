@@ -86,6 +86,15 @@ class AsahiAppManager:
             logger.warning("Desktop integration not available")
             self.desktop_integration = None
         
+        # Initialize user profile integration
+        try:
+            from core.user_profile import UserProfileManager
+            self.profile_manager = UserProfileManager()
+            self._sync_with_user_profile()
+        except ImportError:
+            logger.warning("User profile integration not available")
+            self.profile_manager = None
+        
     def _initialize_apps_database(self) -> Dict[str, Application]:
         """Initialize the curated database of applications"""
         apps = [
@@ -1398,3 +1407,73 @@ class AsahiAppManager:
             recommendations['reasons'].append(f"{updates['firmware']['count']} firmware updates available")
         
         return recommendations
+    
+    def _sync_with_user_profile(self):
+        """Sync installed apps with user profile"""
+        if not self.profile_manager or not self.profile_manager.current_profile:
+            return
+        
+        # Update profile with currently installed apps
+        current_apps = list(self.installed_apps)
+        self.profile_manager.update_installed_apps(current_apps)
+        
+        # Get user preferences
+        profile = self.profile_manager.current_profile
+        preferred_apps = profile.preferences.preferred_apps
+        
+        # Mark preferred apps as recommended
+        for app_name in preferred_apps:
+            if app_name in self.apps_database:
+                self.apps_database[app_name].popularity_score = min(
+                    self.apps_database[app_name].popularity_score + 2, 10
+                )
+    
+    def add_to_preferred_apps(self, app_name: str):
+        """Add app to user's preferred apps list"""
+        if not self.profile_manager or not self.profile_manager.current_profile:
+            return
+        
+        preferred = self.profile_manager.current_profile.preferences.preferred_apps
+        if app_name not in preferred:
+            preferred.append(app_name)
+            self.profile_manager.save_profile()
+    
+    def get_user_recommended_apps(self, limit: int = 10) -> List[Application]:
+        """Get apps recommended based on user profile and similar systems"""
+        if not self.profile_manager or not self.profile_manager.current_profile:
+            return self.get_recommended_apps(limit)
+        
+        profile = self.profile_manager.current_profile
+        hw = profile.hardware_profile
+        
+        # Get all apps and score them
+        scored_apps = []
+        
+        for app in self.apps_database.values():
+            if app.name in self.installed_apps:
+                continue
+            
+            score = app.popularity_score
+            
+            # Boost score for preferred categories
+            if app.category.value in profile.preferences.favorite_categories:
+                score += 3
+            
+            # Hardware-specific recommendations
+            if hw.apple_silicon_model in ['M1'] and app.name == 'rust':
+                score += 2  # Rust via rustup is important for M1
+            
+            # Performance profile considerations
+            if profile.preferences.performance_profile == 'performance':
+                if app.category.value == 'Development':
+                    score += 1
+            elif profile.preferences.performance_profile == 'power_save':
+                # Prefer lighter apps
+                if app.size_mb < 100:
+                    score += 1
+            
+            scored_apps.append((app, score))
+        
+        # Sort by score and return top recommendations
+        scored_apps.sort(key=lambda x: x[1], reverse=True)
+        return [app for app, score in scored_apps[:limit]]
