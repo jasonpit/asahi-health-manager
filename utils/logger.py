@@ -6,7 +6,7 @@ import gzip
 import shutil
 from datetime import datetime, timedelta
 from pathlib import Path
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, List
 from logging.handlers import RotatingFileHandler
 import sys
 

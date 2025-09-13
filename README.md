@@ -9,6 +9,23 @@ An advanced, AI-powered system health management tool specifically designed for 
 
 ## Features
 
+### Intelligent Application Management (NEW!)
+- **Curated App Database**: Hand-picked applications optimized for Asahi Linux
+- **Category Browsing**: Browse apps by Development, Productivity, Multimedia, Gaming, and more
+- **Smart Recommendations**: AI-powered app suggestions based on popularity and compatibility
+- **One-Click Installation**: Easy installation with automatic dependency management
+- **Asahi Compatibility Notes**: Performance tips and compatibility information for Apple Silicon
+- **Quick Essentials Setup**: Install essential apps with a single command
+- **Desktop Integration**: Pin to taskbar/dock with professional app launcher
+
+### Comprehensive Theme Management (NEW!)
+- **Desktop Environment Detection**: Automatically detects KDE, GNOME, XFCE, etc.
+- **40+ Curated Themes**: GTK themes, icon packs, cursors, wallpapers, and fonts
+- **Theme Presets**: Complete style makeovers (Modern Dark, Material Design, etc.)
+- **Compatibility Filtering**: Only shows themes that work with your desktop environment
+- **Font Management**: Coding fonts (Fira Code, JetBrains Mono) and UI fonts
+- **One-Click Installation**: Automatic theme application with post-install configuration
+
 ### Comprehensive System Scanning
 - **OS Health Analysis**: Memory, disk, kernel, and boot health monitoring
 - **Hardware Status**: Thermal monitoring, power management, display issues
@@ -96,6 +113,12 @@ curl -fsSL https://raw.githubusercontent.com/your-repo/asahi-health-manager/main
 # Run a basic system scan
 asahi-healer --scan
 
+# Launch the Application Manager (NEW!)
+asahi-healer --apps
+
+# Install desktop integration for easy access (NEW!)
+./install-desktop-integration.sh
+
 # Check what fixes would be applied (safe)
 asahi-healer --dry-run --fix-all
 
@@ -112,6 +135,9 @@ System Scanning:
   --scan              Run full system scan (default)
   --quick-scan        Run quick health check
   --deep-scan         Run comprehensive deep scan
+
+Application Management:
+  --apps              Launch intelligent app manager (NEW!)
 
 Fixing & Maintenance:
   --fix-all           Auto-fix all detected issues
@@ -145,6 +171,168 @@ Advanced Options:
   --force             Force execution without confirmations
   --ai-provider NAME  Use specific AI provider (claude|openai)
 ```
+
+## Application Manager
+
+The new Intelligent Application Manager provides a curated selection of applications optimized for Asahi Linux on Apple Silicon Macs.
+
+### Features
+
+- **30+ Curated Applications**: Hand-picked apps tested on Asahi Linux
+- **10 Categories**: Development, Productivity, Multimedia, Gaming, Communication, System Tools, Graphics, Network, Education, Utilities
+- **Smart Recommendations**: Apps ranked by popularity and compatibility
+- **Asahi-Specific Notes**: Performance tips for Apple Silicon (e.g., Rust via rustup for 16K page compatibility)
+- **Multiple Package Managers**: Supports DNF, Flatpak, and source installations
+- **Batch Installation**: Install multiple apps at once
+
+### Usage
+
+```bash
+# Launch the Application Manager
+asahi-healer --apps
+```
+
+#### Main Menu Options:
+1. **Browse by Category**: Explore apps organized by type
+2. **View Top Recommendations**: See the most popular uninstalled apps
+3. **Search Applications**: Find apps by name or description
+4. **View Installed Apps**: See what's already installed
+5. **Quick Install Essentials**: One-click installation of must-have apps
+6. **Export Recommendations**: Save app list to JSON file
+
+### Essential Applications Included
+
+**Development Tools:**
+- Visual Studio Code, Neovim, Git, Docker, Rust (16K compatible), Node.js, Python Pip
+
+**Productivity:**
+- Firefox, Chromium, Thunderbird, LibreOffice, Obsidian
+
+**Multimedia:**
+- VLC, MPV, Spotify, Audacity
+
+**Graphics & Design:**
+- GIMP, Inkscape, Krita, Blender (with GPU acceleration)
+
+**Communication:**
+- Discord, Slack, Signal
+
+**System Tools:**
+- **Asahi Audio** (CRITICAL - Essential audio configuration for Apple Silicon)
+- htop, Neofetch, Timeshift, GParted
+
+**Gaming & Windows Compatibility:**
+- Steam (Experimental x86 emulation support)
+- Native ARM64 games (SuperTuxKart, Minetest)
+- Wine (Windows compatibility layer)
+- Bottles (Modern Wine management)
+- Lutris (Gaming platform with Wine integration)
+- Box64 (x86 emulation for ARM64)
+
+**Themes & Customization:**
+- **Theme Manager** (Comprehensive desktop theming system)
+
+## Theme Manager
+
+The integrated Theme Manager provides professional desktop customization with curated themes optimized for Asahi Linux.
+
+### Features
+
+- **Desktop Environment Detection**: Automatically detects your DE (KDE, GNOME, XFCE, etc.)
+- **40+ Curated Themes**: Professional themes tested on Asahi Linux
+- **8 Theme Categories**: GTK themes, icon packs, cursors, wallpapers, fonts, Plasma themes, shell extensions
+- **Compatibility Filtering**: Only shows themes compatible with your desktop environment
+- **Theme Presets**: Complete style collections for instant makeovers
+
+### Usage
+
+#### Access Theme Manager:
+```bash
+# Method 1: Through App Manager
+asahi-healer --apps
+# → Browse by Category → Themes & Customization → Theme Manager
+
+# Method 2: Direct launch (after desktop integration)
+# Search for "Asahi App Manager" → Right-click → Theme Manager
+```
+
+### Theme Categories
+
+#### **GTK Themes** (Window Appearance)
+- **Arc Theme**: Modern flat theme with transparency
+- **Nordic**: Dark Scandinavian theme (Nord colors)
+- **Orchis**: Material Design with multiple variants
+- **Adapta**: Material Design inspired adaptive theme
+- **Materia**: Clean Material Design for GTK3/4
+
+#### **Icon Packs** (Application Icons)
+- **Papirus**: Most popular SVG icon theme (10/10 rating)
+- **Tela**: Flat colorful design icons
+- **Fluent**: Microsoft Fluent Design inspired
+- **Candy**: Sweet gradient icons
+- **La Capitaine**: macOS and Material Design inspired
+
+#### **Cursor Themes** (Mouse Appearance)
+- **Bibata**: Material Based cursor theme
+- **Capitaine**: macOS-inspired cursors
+- **Oreo**: Animated cursors with smooth transitions
+
+#### **Font Collections**
+**Coding Fonts:**
+- **Fira Code**: Programming ligatures (10/10 rating)
+- **JetBrains Mono**: Developer-focused design
+- **Cascadia Code**: Microsoft's modern coding font
+
+**UI Fonts:**
+- **Inter**: Modern UI font for screens
+- **Noto**: Google's comprehensive language support
+
+#### **Wallpaper Collections**
+- **Dynamic Wallpapers**: Time-based changing backgrounds
+- **Nordic**: Minimalist matching Nordic color scheme
+- **Firewatch**: Beautiful landscape wallpapers
+- **Abstract**: Modern geometric designs
+
+### Theme Presets
+
+#### 🌙 **Modern Dark**
+- Nordic theme + Papirus icons + Bibata cursors + Fira Code font
+- Perfect for developers and dark theme lovers
+
+#### 🎨 **Material Design**
+- Adapta theme + Tela icons + Capitaine cursors + JetBrains Mono
+- Google Material Design aesthetic
+
+#### ☀️ **Minimal Light**
+- Arc theme + La Capitaine icons + Inter font + Nordic wallpapers
+- Clean and professional light theme
+
+#### 💻 **Developer Setup**
+- Nordic theme + all coding fonts + development-optimized configuration
+- Complete setup for programming
+
+#### 🍭 **KDE Candy** (KDE Only)
+- Sweet theme + Candy icons + Oreo cursors + colorful wallpapers
+- Fun and colorful for KDE Plasma users
+
+### Desktop Integration
+
+```bash
+# Install desktop application launcher
+./install-desktop-integration.sh
+```
+
+**After installation, you can:**
+- **Find "Asahi App Manager" in your applications menu**
+- **Pin to taskbar/dock** for one-click access
+- **Right-click for quick actions**: App Manager, Theme Manager, System Scan
+- **Search by typing "Asahi"** in your app launcher
+
+**Desktop Environment Support:**
+- **KDE Plasma**: Application Menu → System → Asahi App Manager
+- **GNOME**: Activities → Show Applications → Asahi App Manager
+- **XFCE**: Applications Menu → System → Asahi App Manager
+- **MATE**: Applications Menu → System Tools → Asahi App Manager
 
 ## Configuration
 
@@ -1092,6 +1280,59 @@ Enterprise support available for:
 - Training and consulting
 
 Contact: enterprise@example.com
+
+## Project Structure
+
+```
+asahi-health-manager/
+├── 📄 asahi_healer.py              # Main application entry point
+├── 📄 asahi-app-manager.desktop    # Desktop application entry
+├── 📁 core/                        # Core system modules
+│   ├── 🔍 system_scanner.py        # Comprehensive system health scanning
+│   ├── 🤖 ai_integration.py        # Claude/OpenAI API integration
+│   ├── 💡 recommendation_engine.py # AI-powered recommendations
+│   ├── 🔧 auto_fixer.py           # Safe automated repair system
+│   ├── ⏰ scheduler.py             # Cron-based task scheduling
+│   ├── 📱 app_manager.py           # Intelligent application management
+│   └── 🎨 theme_manager.py         # Desktop theme management
+├── 📁 ui/                          # User interface components
+│   ├── 🖥️  terminal_ui.py          # Rich terminal interface
+│   ├── 📱 app_manager_ui.py        # Application manager interface
+│   └── 🎨 theme_manager_ui.py      # Theme manager interface
+├── 📁 utils/                       # Utility modules
+│   ├── ⚙️  config_manager.py       # YAML configuration management
+│   └── 📝 logger.py               # Comprehensive logging system
+├── 📁 icons/                       # Application icons
+│   └── 🎯 asahi-app-manager.svg    # Main application icon
+├── 📄 launch-app-manager.sh        # Desktop launcher for app manager
+├── 📄 launch-theme-manager.sh      # Desktop launcher for theme manager
+├── 📄 launch-system-scan.sh        # Desktop launcher for system scan
+├── 📄 install-desktop-integration.sh # Desktop integration installer
+├── 📄 requirements.txt             # Python dependencies
+├── 📄 setup.py                     # Package configuration
+├── 📄 install.sh                   # Automated installer
+├── 📄 LICENSE                      # MIT License
+├── 📄 README.md                    # This comprehensive guide
+└── 📄 .gitignore                   # Git ignore patterns
+```
+
+### Key Components
+
+#### **Core Modules**
+- **app_manager.py**: 40+ curated applications with smart recommendations
+- **theme_manager.py**: 40+ desktop themes with DE detection
+- **system_scanner.py**: Health monitoring for Asahi-specific issues
+- **ai_integration.py**: Claude/OpenAI integration for smart analysis
+
+#### **User Interfaces**
+- **app_manager_ui.py**: Rich terminal interface for app management
+- **theme_manager_ui.py**: Interactive theme browsing and installation
+- **terminal_ui.py**: Main system interface with progress tracking
+
+#### **Desktop Integration**
+- **asahi-app-manager.desktop**: Standard desktop application entry
+- **launch-*.sh**: Smart terminal launchers for different desktop environments
+- **install-desktop-integration.sh**: One-click desktop integration
 
 ## Related Projects & Resources
 

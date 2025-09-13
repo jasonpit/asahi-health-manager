@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background Circle -->
+  <circle cx="32" cy="32" r="30" fill="#2563eb" stroke="#1e40af" stroke-width="2"/>
+  
+  <!-- Apple Silicon Chip Design -->
+  <rect x="16" y="16" width="32" height="32" rx="4" fill="#ffffff" opacity="0.9"/>
+  
+  <!-- Circuit Pattern -->
+  <g stroke="#2563eb" stroke-width="1.5" fill="none">
+    <!-- Horizontal lines -->
+    <line x1="20" y1="24" x2="44" y2="24"/>
+    <line x1="20" y1="32" x2="44" y2="32"/>
+    <line x1="20" y1="40" x2="44" y2="40"/>
+    
+    <!-- Vertical lines -->
+    <line x1="24" y1="20" x2="24" y2="44"/>
+    <line x1="32" y1="20" x2="32" y2="44"/>
+    <line x1="40" y1="20" x2="40" y2="44"/>
+  </g>
+  
+  <!-- Connection points -->
+  <g fill="#f59e0b">
+    <circle cx="24" cy="24" r="2"/>
+    <circle cx="32" cy="24" r="2"/>
+    <circle cx="40" cy="24" r="2"/>
+    <circle cx="24" cy="32" r="2"/>
+    <circle cx="40" cy="32" r="2"/>
+    <circle cx="24" cy="40" r="2"/>
+    <circle cx="32" cy="40" r="2"/>
+    <circle cx="40" cy="40" r="2"/>
+  </g>
+  
+  <!-- Center Apple Logo Style -->
+  <circle cx="32" cy="32" r="3" fill="#ef4444"/>
+  
+  <!-- Download/Install Arrow -->
+  <g transform="translate(45, 45)" fill="#10b981">
+    <circle cx="0" cy="0" r="8" fill="#10b981" opacity="0.8"/>
+    <polygon points="-3,-2 3,-2 0,4" fill="white"/>
+    <rect x="-1" y="-6" width="2" height="6" fill="white"/>
+  </g>
+  
+  <!-- Gear Icon for Settings -->
+  <g transform="translate(19, 45)" fill="#6b7280">
+    <circle cx="0" cy="0" r="8" fill="#6b7280" opacity="0.8"/>
+    <circle cx="0" cy="0" r="3" fill="white"/>
+    <g stroke="white" stroke-width="1.5" fill="none">
+      <line x1="0" y1="-6" x2="0" y2="-4"/>
+      <line x1="0" y1="4" x2="0" y2="6"/>
+      <line x1="-6" y1="0" x2="-4" y2="0"/>
+      <line x1="4" y1="0" x2="6" y2="0"/>
+    </g>
+  </g>
+</svg>

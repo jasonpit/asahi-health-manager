@@ -1,0 +1,24 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Asahi App Manager
+GenericName=Application Manager
+Comment=Intelligent application management for Asahi Linux
+Icon=asahi-app-manager
+Exec=/home/jason/src/GitHub/asahi-health-manager/launch-app-manager.sh
+Terminal=true
+Categories=System;Settings;PackageManager;
+Keywords=apps;applications;install;software;package;asahi;apple silicon;
+StartupNotify=true
+MimeType=
+Actions=ThemeManager;SystemScan;
+
+[Desktop Action ThemeManager]
+Name=Theme Manager
+Exec=/home/jason/src/GitHub/asahi-health-manager/launch-theme-manager.sh
+Icon=asahi-app-manager
+
+[Desktop Action SystemScan]
+Name=System Health Scan
+Exec=/home/jason/src/GitHub/asahi-health-manager/launch-system-scan.sh
+Icon=asahi-app-manager

@@ -18,7 +18,9 @@ from core.ai_integration import AIIntegration
 from core.recommendation_engine import RecommendationEngine
 from core.auto_fixer import AutoFixer
 from core.scheduler import TaskScheduler
+from core.app_manager import AsahiAppManager
 from ui.terminal_ui import TerminalUI
+from ui.app_manager_ui import AppManagerUI
 from utils.config_manager import ConfigManager
 from utils.logger import Logger
 
@@ -31,7 +33,9 @@ class AsahiSystemHealer:
         self.recommendation_engine = RecommendationEngine()
         self.auto_fixer = AutoFixer()
         self.scheduler = TaskScheduler()
+        self.app_manager = AsahiAppManager()
         self.ui = TerminalUI()
+        self.app_ui = AppManagerUI()
         self.running = False
         
     async def initialize(self):
@@ -83,6 +87,7 @@ class AsahiSystemHealer:
                 "Select individual fixes",
                 "Generate detailed report",
                 "Schedule regular scans",
+                "Manage Applications",
                 "Exit"
             ])
             
@@ -94,6 +99,8 @@ class AsahiSystemHealer:
                 await self.generate_report(scan_results, recommendations)
             elif choice == 3:
                 await self.setup_scheduling()
+            elif choice == 4:
+                await self.manage_applications()
         
         return scan_results, recommendations
     
@@ -135,6 +142,18 @@ class AsahiSystemHealer:
         if schedule_config:
             await self.scheduler.setup_schedule(schedule_config)
             self.ui.show_message("Scheduled scans configured successfully")
+    
+    async def manage_applications(self):
+        """Launch the application manager UI"""
+        try:
+            # Run the app manager UI in a separate thread to avoid async conflicts
+            import threading
+            app_thread = threading.Thread(target=self.app_ui.run)
+            app_thread.start()
+            app_thread.join()
+        except Exception as e:
+            self.logger.error(f"Error launching app manager: {e}")
+            self.ui.show_message(f"Failed to launch app manager: {e}")
     
     async def daemon_mode(self):
         """Run in daemon mode for scheduled operations"""
@@ -179,6 +198,7 @@ async def main():
         description="Asahi Linux System Healer - Comprehensive system health management"
     )
     parser.add_argument('--scan', action='store_true', help='Run full system scan')
+    parser.add_argument('--apps', action='store_true', help='Launch application manager')
     parser.add_argument('--daemon', action='store_true', help='Run in daemon mode')
     parser.add_argument('--config', help='Path to configuration file')
     parser.add_argument('--report-only', action='store_true', help='Generate report only')
@@ -199,7 +219,9 @@ async def main():
         sys.exit(1)
     
     try:
-        if args.daemon:
+        if args.apps:
+            await healer.manage_applications()
+        elif args.daemon:
             await healer.daemon_mode()
         elif args.scan or not any(vars(args).values()):
             await healer.run_full_scan()
