@@ -434,7 +434,7 @@ class AppManagerUI:
                     total=100
                 )
                 
-                success, message = self.app_manager.install_app(app.name, dry_run=False)
+                success, message = self.app_manager.install_app_fast(app.name, dry_run=False)
                 
                 if success:
                     success_count += 1
@@ -594,7 +594,7 @@ class AppManagerUI:
                 install_cmd = self.app_manager.get_installation_command(app)
                 progress.console.print(f"[dim]    Command: {install_cmd}[/dim]")
                 
-                success, message = self.app_manager.install_app(app.name, dry_run=False)
+                success, message = self.app_manager.install_app_fast(app.name, dry_run=False)
                 
                 if success:
                     success_count += 1
@@ -710,6 +710,154 @@ class AppManagerUI:
                 if app_name in self.app_manager.apps_database:
                     app = self.app_manager.apps_database[app_name]
                     self.console.print(f"  - {app.display_name}")
+    
+    def view_all_installed_packages(self):
+        """Display comprehensive list of all installed packages"""
+        self.console.print("\n[bold]Scanning all installed packages...[/bold]")
+        
+        with self.console.status("[bold green]Detecting installed packages..."):
+            all_packages = self.app_manager.get_all_installed_packages()
+        
+        total_packages = sum(len(packages) for packages in all_packages.values())
+        self.console.print(f"\n[bold green]Found {total_packages} installed packages total[/bold green]\n")
+        
+        for pm_name, packages in all_packages.items():
+            if packages:
+                self.console.print(f"[bold cyan]{pm_name.upper()} ({len(packages)} packages):[/bold cyan]")
+                # Show first 10 packages, then summarize
+                displayed_packages = packages[:10]
+                for package in displayed_packages:
+                    self.console.print(f"  • {package}")
+                
+                if len(packages) > 10:
+                    self.console.print(f"  ... and {len(packages) - 10} more packages")
+                self.console.print()
+        
+        Prompt.ask("\nPress Enter to continue")
+    
+    def view_system_updates(self):
+        """Display available system updates"""
+        self.console.print("\n[bold]Checking for system updates...[/bold]")
+        
+        with self.console.status("[bold green]Scanning for updates..."):
+            updates = self.app_manager.get_system_updates()
+            recommendations = self.app_manager.get_update_recommendations()
+        
+        total_updates = updates['total_count']
+        
+        if total_updates == 0:
+            self.console.print("\n[bold green][+] System is up to date![/bold green]")
+            if updates['reboot_required']:
+                self.console.print("[bold yellow][!] System reboot is recommended[/bold yellow]")
+        else:
+            # Priority color coding
+            priority_colors = {
+                'critical': 'red',
+                'high': 'orange1',
+                'medium': 'yellow',
+                'low': 'white'
+            }
+            priority_color = priority_colors.get(recommendations['priority'], 'white')
+            
+            self.console.print(f"\n[bold {priority_color}]{total_updates} updates available ({recommendations['priority']} priority)[/bold {priority_color}]")
+            
+            # DNF updates
+            if updates['dnf']['count'] > 0:
+                self.console.print(f"\n[bold]DNF Packages ({updates['dnf']['count']}):[/bold]")
+                if updates['dnf']['security'] > 0:
+                    self.console.print(f"  [red][!] {updates['dnf']['security']} security updates[/red]")
+                
+                # Show sample of updates
+                for update in updates['dnf']['available'][:5]:
+                    self.console.print(f"  • {update}")
+                if len(updates['dnf']['available']) > 5:
+                    self.console.print(f"  ... and {updates['dnf']['count'] - 5} more")
+            
+            # Flatpak updates
+            if updates['flatpak']['count'] > 0:
+                self.console.print(f"\n[bold]Flatpak Applications ({updates['flatpak']['count']}):[/bold]")
+                for update in updates['flatpak']['available'][:3]:
+                    self.console.print(f"  • {update}")
+                if len(updates['flatpak']['available']) > 3:
+                    self.console.print(f"  ... and {updates['flatpak']['count'] - 3} more")
+            
+            # Firmware updates
+            if updates['firmware']['count'] > 0:
+                self.console.print(f"\n[bold]Firmware ({updates['firmware']['count']}):[/bold]")
+                for update in updates['firmware']['available']:
+                    self.console.print(f"  • {update}")
+            
+            # Recommendations
+            self.console.print(f"\n[bold]Recommendation:[/bold] {recommendations['schedule_suggestion']}")
+            self.console.print(f"[bold]Estimated time:[/bold] {recommendations['estimated_time']}")
+            
+            if updates['reboot_required']:
+                self.console.print("\n[bold red][!] System reboot required after updates[/bold red]")
+            
+            # Offer to perform updates
+            self.console.print(f"\n[bold]Available actions:[/bold]")
+            self.console.print("1. Install all updates")
+            self.console.print("2. Install security updates only")
+            self.console.print("3. Preview update commands (dry run)")
+            self.console.print("4. Return to main menu")
+            
+            choice = Prompt.ask("Choose action", choices=["1", "2", "3", "4"], default="4")
+            
+            if choice == "1":
+                self.perform_system_updates('all')
+            elif choice == "2":
+                self.perform_system_updates('dnf')  # Focus on DNF for security updates
+            elif choice == "3":
+                success, message = self.app_manager.perform_system_update('all', dry_run=True)
+                self.console.print(f"\n[cyan]Dry run result:[/cyan] {message}")
+                Prompt.ask("\nPress Enter to continue")
+        
+        if total_updates == 0:
+            Prompt.ask("\nPress Enter to continue")
+    
+    def perform_system_updates(self, update_type: str = 'all'):
+        """Perform system updates with progress indication"""
+        self.console.print(f"\n[bold]Starting system updates ({update_type})...[/bold]")
+        self.console.print("[yellow][!] This may take several minutes. Please be patient.[/yellow]\n")
+        
+        with Progress(
+            SpinnerColumn(),
+            TextColumn("[progress.description]{task.description}"),
+            TimeElapsedColumn(),
+            console=self.console
+        ) as progress:
+            
+            task = progress.add_task(
+                f"Updating system ({update_type})...",
+                total=None
+            )
+            
+            try:
+                success, message = self.app_manager.perform_system_update(update_type, dry_run=False)
+                
+                progress.update(task, description="Update completed")
+                
+                if success:
+                    self.console.print(f"\n[bold green][+] Updates completed successfully![/bold green]")
+                    self.console.print(f"[green]{message}[/green]")
+                    
+                    # Check if reboot is needed
+                    updates = self.app_manager.get_system_updates()
+                    if updates['reboot_required']:
+                        self.console.print(f"\n[bold yellow][!] System reboot is recommended[/bold yellow]")
+                        reboot_choice = Prompt.ask("Reboot now?", choices=["y", "n"], default="n")
+                        if reboot_choice == "y":
+                            self.console.print("[bold red]Rebooting system...[/bold red]")
+                            subprocess.run(["sudo", "reboot"], check=False)
+                        
+                else:
+                    self.console.print(f"\n[bold red][-] Update failed or completed with errors[/bold red]")
+                    self.console.print(f"[red]{message}[/red]")
+                    
+            except Exception as e:
+                self.console.print(f"\n[bold red][-] Update error: {str(e)}[/bold red]")
+        
+        Prompt.ask("\nPress Enter to continue")
     
     def run(self):
         """Main UI loop"""

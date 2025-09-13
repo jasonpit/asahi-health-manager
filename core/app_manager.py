@@ -7,6 +7,8 @@ Provides curated app recommendations and easy installation for Asahi Linux users
 import json
 import subprocess
 import logging
+import asyncio
+import concurrent.futures
 from typing import Dict, List, Optional, Tuple
 from dataclasses import dataclass
 from enum import Enum
@@ -608,6 +610,108 @@ class AsahiAppManager:
                 self.installed_apps.add(app_name)
                 logger.debug(f"Detected installed app: {app.display_name}")
     
+    def get_all_installed_packages(self) -> Dict[str, List[str]]:
+        """Get comprehensive list of all installed packages from all package managers"""
+        installed = {
+            'dnf': [],
+            'flatpak': [],
+            'snap': [],
+            'pip': [],
+            'npm': [],
+            'cargo': []
+        }
+        
+        # DNF/RPM packages
+        try:
+            result = subprocess.run(
+                ["rpm", "-qa", "--queryformat", "%{NAME}\n"],
+                capture_output=True,
+                text=True,
+                timeout=10
+            )
+            if result.returncode == 0:
+                installed['dnf'] = sorted([pkg.strip() for pkg in result.stdout.split('\n') if pkg.strip()])
+        except Exception as e:
+            logger.warning(f"Failed to query DNF packages: {e}")
+        
+        # Flatpak packages
+        try:
+            result = subprocess.run(
+                ["flatpak", "list", "--app", "--columns=application"],
+                capture_output=True,
+                text=True,
+                timeout=10
+            )
+            if result.returncode == 0:
+                installed['flatpak'] = sorted([pkg.strip() for pkg in result.stdout.split('\n') if pkg.strip()])
+        except Exception:
+            pass  # Flatpak might not be installed
+        
+        # Snap packages
+        try:
+            result = subprocess.run(
+                ["snap", "list"],
+                capture_output=True,
+                text=True,
+                timeout=10
+            )
+            if result.returncode == 0:
+                lines = result.stdout.split('\n')[1:]  # Skip header
+                installed['snap'] = sorted([line.split()[0] for line in lines if line.strip()])
+        except Exception:
+            pass  # Snap might not be installed
+        
+        # Python pip packages
+        try:
+            result = subprocess.run(
+                ["pip", "list", "--format=freeze"],
+                capture_output=True,
+                text=True,
+                timeout=10
+            )
+            if result.returncode == 0:
+                installed['pip'] = sorted([pkg.split('==')[0] for pkg in result.stdout.split('\n') if '==' in pkg])
+        except Exception:
+            pass
+        
+        # Node.js npm packages (global)
+        try:
+            result = subprocess.run(
+                ["npm", "list", "-g", "--depth=0", "--json"],
+                capture_output=True,
+                text=True,
+                timeout=10
+            )
+            if result.returncode == 0:
+                import json
+                npm_data = json.loads(result.stdout)
+                if 'dependencies' in npm_data:
+                    installed['npm'] = sorted(list(npm_data['dependencies'].keys()))
+        except Exception:
+            pass
+        
+        # Rust cargo packages
+        try:
+            result = subprocess.run(
+                ["cargo", "install", "--list"],
+                capture_output=True,
+                text=True,
+                timeout=10
+            )
+            if result.returncode == 0:
+                cargo_packages = []
+                for line in result.stdout.split('\n'):
+                    if line and not line.startswith(' '):
+                        pkg_name = line.split()[0]
+                        if pkg_name.endswith(':'):
+                            pkg_name = pkg_name[:-1]
+                        cargo_packages.append(pkg_name)
+                installed['cargo'] = sorted(cargo_packages)
+        except Exception:
+            pass
+        
+        return installed
+    
     def _is_app_installed(self, app: Application) -> bool:
         """Check if an application is installed"""
         # Special handling for built-in components
@@ -759,6 +863,218 @@ class AsahiAppManager:
         except Exception as e:
             return False, f"Installation error: {str(e)}"
     
+    def install_app_fast(self, app_name: str, dry_run: bool = False) -> Tuple[bool, str]:
+        """Fast installation with optimizations"""
+        if app_name not in self.apps_database:
+            return False, f"Application '{app_name}' not found in database"
+        
+        app = self.apps_database[app_name]
+        
+        if app_name in self.installed_apps:
+            return True, f"{app.display_name} is already installed"
+        
+        # Get installation command
+        install_cmd = self.get_installation_command(app)
+        if not install_cmd:
+            return False, f"No installation method available for {app.display_name}"
+        
+        if dry_run:
+            return True, f"Would run: {install_cmd}"
+        
+        # Optimized installation with reduced timeout and parallel deps
+        try:
+            logger.info(f"Installing {app.display_name}...")
+            
+            # Install dependencies in parallel if multiple
+            if len(app.dependencies) > 1:
+                dep_results = []
+                with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
+                    future_to_dep = {
+                        executor.submit(self.install_app_fast, dep): dep 
+                        for dep in app.dependencies
+                    }
+                    
+                    for future in concurrent.futures.as_completed(future_to_dep):
+                        dep = future_to_dep[future]
+                        try:
+                            success, msg = future.result()
+                            dep_results.append((success, dep, msg))
+                        except Exception as e:
+                            dep_results.append((False, dep, str(e)))
+                
+                # Check if any dependencies failed
+                failed_deps = [dep for success, dep, msg in dep_results if not success]
+                if failed_deps:
+                    return False, f"Failed to install dependencies: {', '.join(failed_deps)}"
+            
+            # Sequential dependency installation for single deps
+            elif app.dependencies:
+                for dep in app.dependencies:
+                    dep_success, dep_msg = self.install_app_fast(dep, dry_run=False)
+                    if not dep_success:
+                        return False, f"Failed to install dependency {dep}: {dep_msg}"
+            
+            # Optimize package manager commands
+            optimized_cmd = self._optimize_install_command(install_cmd)
+            
+            # Run installation with reduced timeout
+            result = subprocess.run(
+                optimized_cmd,
+                shell=True,
+                capture_output=True,
+                text=True,
+                timeout=120  # Reduced from 300 to 120 seconds
+            )
+            
+            if result.returncode == 0:
+                # Run post-install commands in background if they're non-critical
+                if app.post_install_commands:
+                    self._run_post_install_async(app.post_install_commands)
+                
+                # Quick verification
+                if self._is_app_installed(app):
+                    self.installed_apps.add(app_name)
+                    return True, f"Successfully installed {app.display_name}"
+                else:
+                    return False, f"Installation completed but verification failed for {app.display_name}"
+            else:
+                error_msg = result.stderr.strip()[:200]  # Truncate long error messages
+                return False, f"Installation failed: {error_msg}"
+                
+        except subprocess.TimeoutExpired:
+            return False, f"Installation timed out for {app.display_name}"
+        except Exception as e:
+            return False, f"Installation error: {str(e)}"
+    
+    def _optimize_install_command(self, cmd: str) -> str:
+        """Optimize installation commands for speed"""
+        # Add parallel download flags for DNF
+        if 'dnf install' in cmd:
+            if '--assumeyes' not in cmd:
+                cmd = cmd.replace('dnf install', 'dnf install --assumeyes')
+            if '--best' not in cmd:
+                cmd = cmd.replace('dnf install', 'dnf install --best')
+            # Enable parallel downloads
+            cmd = cmd.replace('dnf install', 'dnf install --setopt=max_parallel_downloads=10')
+        
+        # Add quiet flags to reduce output processing
+        if 'dnf' in cmd and '--quiet' not in cmd:
+            cmd = cmd.replace('dnf', 'dnf --quiet')
+        
+        # Optimize flatpak installs
+        if 'flatpak install' in cmd:
+            if '--assumeyes' not in cmd:
+                cmd = cmd.replace('flatpak install', 'flatpak install --assumeyes')
+            if '--noninteractive' not in cmd:
+                cmd = cmd.replace('flatpak install', 'flatpak install --noninteractive')
+        
+        return cmd
+    
+    def _run_post_install_async(self, commands: List[str]):
+        """Run post-install commands asynchronously"""
+        def run_commands():
+            for cmd in commands:
+                try:
+                    subprocess.run(cmd, shell=True, capture_output=True, timeout=30)
+                except Exception as e:
+                    logger.warning(f"Post-install command failed: {cmd}, error: {e}")
+        
+        # Run in background thread
+        import threading
+        thread = threading.Thread(target=run_commands)
+        thread.daemon = True
+        thread.start()
+    
+    def batch_install_optimized(self, app_names: List[str], max_workers: int = 3) -> Dict[str, Tuple[bool, str]]:
+        """Install multiple applications in parallel with optimizations"""
+        results = {}
+        
+        # Group applications by package manager for batch operations
+        dnf_apps = []
+        other_apps = []
+        
+        for app_name in app_names:
+            if app_name in self.apps_database:
+                app = self.apps_database[app_name]
+                if app.package_manager == PackageManager.DNF:
+                    dnf_apps.append(app_name)
+                else:
+                    other_apps.append(app_name)
+        
+        # Batch install DNF packages if possible
+        if dnf_apps:
+            batch_success = self._batch_install_dnf(dnf_apps)
+            for app_name in dnf_apps:
+                results[app_name] = batch_success.get(app_name, (False, "Batch install failed"))
+        
+        # Install other packages in parallel
+        if other_apps:
+            with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
+                future_to_app = {
+                    executor.submit(self.install_app_fast, app_name): app_name 
+                    for app_name in other_apps
+                }
+                
+                for future in concurrent.futures.as_completed(future_to_app):
+                    app_name = future_to_app[future]
+                    try:
+                        results[app_name] = future.result()
+                    except Exception as e:
+                        results[app_name] = (False, str(e))
+        
+        return results
+    
+    def _batch_install_dnf(self, app_names: List[str]) -> Dict[str, Tuple[bool, str]]:
+        """Batch install DNF packages for efficiency"""
+        results = {}
+        
+        # Get package names
+        package_names = []
+        for app_name in app_names:
+            if app_name in self.apps_database:
+                app = self.apps_database[app_name]
+                package_names.append(app.package_name)
+        
+        if not package_names:
+            return results
+        
+        try:
+            # Single DNF command for all packages
+            cmd = f"dnf install --assumeyes --quiet --best --setopt=max_parallel_downloads=10 {' '.join(package_names)}"
+            logger.info(f"Batch installing DNF packages: {', '.join(package_names)}")
+            
+            result = subprocess.run(
+                cmd,
+                shell=True,
+                capture_output=True,
+                text=True,
+                timeout=300
+            )
+            
+            if result.returncode == 0:
+                # All packages installed successfully
+                for app_name in app_names:
+                    if app_name in self.apps_database:
+                        app = self.apps_database[app_name]
+                        if self._is_app_installed(app):
+                            self.installed_apps.add(app_name)
+                            results[app_name] = (True, f"Successfully installed {app.display_name}")
+                        else:
+                            results[app_name] = (False, f"Batch install completed but verification failed")
+            else:
+                # Fallback to individual installs
+                logger.warning(f"Batch install failed, falling back to individual installs: {result.stderr}")
+                for app_name in app_names:
+                    results[app_name] = self.install_app_fast(app_name)
+                    
+        except Exception as e:
+            logger.error(f"Batch install error: {e}")
+            # Fallback to individual installs
+            for app_name in app_names:
+                results[app_name] = self.install_app_fast(app_name)
+        
+        return results
+    
     def get_app_info(self, app_name: str) -> Optional[Application]:
         """Get detailed information about an application"""
         return self.apps_database.get(app_name)
@@ -865,3 +1181,220 @@ class AsahiAppManager:
         except Exception as e:
             logger.error(f"Failed to export recommendations: {e}")
             return False
+    
+    def get_system_updates(self) -> Dict[str, any]:
+        """Check for available system updates across all package managers"""
+        updates = {
+            'dnf': {'available': [], 'count': 0, 'security': 0},
+            'flatpak': {'available': [], 'count': 0},
+            'firmware': {'available': [], 'count': 0},
+            'total_count': 0,
+            'reboot_required': False
+        }
+        
+        # Check DNF updates
+        try:
+            result = subprocess.run(
+                ["dnf", "check-update", "--quiet"],
+                capture_output=True,
+                text=True,
+                timeout=30
+            )
+            # DNF returns 100 if updates are available
+            if result.returncode == 100:
+                update_lines = [line.strip() for line in result.stdout.split('\n') if line.strip() and not line.startswith('Last metadata')]
+                updates['dnf']['available'] = update_lines[:20]  # Limit to first 20 for display
+                updates['dnf']['count'] = len(update_lines)
+                
+                # Check for security updates
+                sec_result = subprocess.run(
+                    ["dnf", "updateinfo", "list", "sec", "--quiet"],
+                    capture_output=True,
+                    text=True,
+                    timeout=15
+                )
+                if sec_result.returncode == 0:
+                    sec_lines = [line for line in sec_result.stdout.split('\n') if line.strip()]
+                    updates['dnf']['security'] = len(sec_lines)
+                    
+        except Exception as e:
+            logger.warning(f"Failed to check DNF updates: {e}")
+        
+        # Check Flatpak updates
+        try:
+            result = subprocess.run(
+                ["flatpak", "remote-ls", "--updates"],
+                capture_output=True,
+                text=True,
+                timeout=20
+            )
+            if result.returncode == 0 and result.stdout.strip():
+                update_lines = [line.strip() for line in result.stdout.split('\n') if line.strip()]
+                updates['flatpak']['available'] = update_lines[:10]
+                updates['flatpak']['count'] = len(update_lines)
+        except Exception:
+            pass  # Flatpak might not be installed
+        
+        # Check firmware updates (fwupd)
+        try:
+            result = subprocess.run(
+                ["fwupdmgr", "get-updates", "--no-unreported"],
+                capture_output=True,
+                text=True,
+                timeout=20
+            )
+            if result.returncode == 0 and 'No updates' not in result.stdout:
+                firmware_lines = [line.strip() for line in result.stdout.split('\n') if line.strip() and '•' in line]
+                updates['firmware']['available'] = firmware_lines[:5]
+                updates['firmware']['count'] = len(firmware_lines)
+        except Exception:
+            pass  # fwupd might not be available
+        
+        # Check if reboot is required
+        try:
+            reboot_files = [
+                '/var/run/reboot-required',
+                '/run/reboot-required'
+            ]
+            for file_path in reboot_files:
+                if Path(file_path).exists():
+                    updates['reboot_required'] = True
+                    break
+        except Exception:
+            pass
+        
+        # Calculate total
+        updates['total_count'] = updates['dnf']['count'] + updates['flatpak']['count'] + updates['firmware']['count']
+        
+        return updates
+    
+    def perform_system_update(self, update_type: str = 'all', dry_run: bool = False) -> Tuple[bool, str]:
+        """Perform system updates"""
+        if dry_run:
+            updates = self.get_system_updates()
+            total_updates = updates['total_count']
+            return True, f"Would update {total_updates} packages (DNF: {updates['dnf']['count']}, Flatpak: {updates['flatpak']['count']}, Firmware: {updates['firmware']['count']})"
+        
+        results = []
+        overall_success = True
+        
+        if update_type in ['all', 'dnf']:
+            try:
+                logger.info("Updating DNF packages...")
+                result = subprocess.run(
+                    ["sudo", "dnf", "upgrade", "--assumeyes", "--quiet", "--best", "--setopt=max_parallel_downloads=10"],
+                    capture_output=True,
+                    text=True,
+                    timeout=1800  # 30 minutes for system updates
+                )
+                if result.returncode == 0:
+                    results.append("DNF packages updated successfully")
+                else:
+                    results.append(f"DNF update failed: {result.stderr[:100]}")
+                    overall_success = False
+            except subprocess.TimeoutExpired:
+                results.append("DNF update timed out")
+                overall_success = False
+            except Exception as e:
+                results.append(f"DNF update error: {str(e)}")
+                overall_success = False
+        
+        if update_type in ['all', 'flatpak']:
+            try:
+                logger.info("Updating Flatpak applications...")
+                result = subprocess.run(
+                    ["flatpak", "update", "--assumeyes", "--noninteractive"],
+                    capture_output=True,
+                    text=True,
+                    timeout=900  # 15 minutes for Flatpak
+                )
+                if result.returncode == 0:
+                    results.append("Flatpak applications updated successfully")
+                else:
+                    if "Nothing to do" in result.stdout:
+                        results.append("Flatpak applications are up to date")
+                    else:
+                        results.append(f"Flatpak update failed: {result.stderr[:100]}")
+                        overall_success = False
+            except subprocess.TimeoutExpired:
+                results.append("Flatpak update timed out")
+                overall_success = False
+            except Exception:
+                results.append("Flatpak not available or failed")
+        
+        if update_type in ['all', 'firmware']:
+            try:
+                logger.info("Updating firmware...")
+                result = subprocess.run(
+                    ["sudo", "fwupdmgr", "update", "--assume-yes"],
+                    capture_output=True,
+                    text=True,
+                    timeout=600  # 10 minutes for firmware
+                )
+                if result.returncode == 0:
+                    results.append("Firmware updated successfully")
+                else:
+                    if "No updates" in result.stdout:
+                        results.append("Firmware is up to date")
+                    else:
+                        results.append(f"Firmware update failed: {result.stderr[:100]}")
+            except subprocess.TimeoutExpired:
+                results.append("Firmware update timed out")
+            except Exception:
+                results.append("Firmware updates not available")
+        
+        # Clean up package cache to free space
+        if update_type in ['all', 'dnf']:
+            try:
+                subprocess.run(["sudo", "dnf", "clean", "packages"], capture_output=True, timeout=30)
+                results.append("Package cache cleaned")
+            except Exception:
+                pass
+        
+        return overall_success, "; ".join(results)
+    
+    def get_update_recommendations(self) -> Dict[str, any]:
+        """Get intelligent update recommendations"""
+        updates = self.get_system_updates()
+        recommendations = {
+            'priority': 'low',
+            'recommended_action': 'none',
+            'reasons': [],
+            'schedule_suggestion': '',
+            'estimated_time': '5-15 minutes'
+        }
+        
+        total_updates = updates['total_count']
+        security_updates = updates['dnf']['security']
+        
+        if security_updates > 0:
+            recommendations['priority'] = 'critical'
+            recommendations['recommended_action'] = 'immediate'
+            recommendations['reasons'].append(f"{security_updates} security updates available")
+            recommendations['schedule_suggestion'] = 'Install security updates immediately'
+        elif total_updates > 50:
+            recommendations['priority'] = 'high'
+            recommendations['recommended_action'] = 'soon'
+            recommendations['reasons'].append(f"Many updates available ({total_updates})")
+            recommendations['schedule_suggestion'] = 'Schedule update session within 24 hours'
+            recommendations['estimated_time'] = '15-30 minutes'
+        elif total_updates > 10:
+            recommendations['priority'] = 'medium'
+            recommendations['recommended_action'] = 'scheduled'
+            recommendations['reasons'].append(f"{total_updates} updates available")
+            recommendations['schedule_suggestion'] = 'Include in weekly maintenance'
+        elif total_updates > 0:
+            recommendations['priority'] = 'low'
+            recommendations['recommended_action'] = 'optional'
+            recommendations['reasons'].append(f"{total_updates} minor updates available")
+            recommendations['schedule_suggestion'] = 'Update at convenience'
+        
+        if updates['reboot_required']:
+            recommendations['priority'] = 'high'
+            recommendations['reasons'].append('System reboot required')
+            recommendations['schedule_suggestion'] += ' (reboot needed)'
+        
+        if updates['firmware']['count'] > 0:
+            recommendations['reasons'].append(f"{updates['firmware']['count']} firmware updates available")
+        
+        return recommendations
