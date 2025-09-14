@@ -1,0 +1,24 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Asahi Health Manager
+Comment=System health management and optimization for Asahi Linux
+Icon=asahi-app-manager
+Exec=python3 /opt/asahi-health-manager/ui/app_manager_ui.py
+Terminal=false
+StartupNotify=true
+Categories=Settings;System;HardwareSettings;
+
+# GNOME Control Center Integration
+X-GNOME-Settings-Panel=asahi-health
+X-GNOME-Bugzilla-Bugzilla=GNOME
+X-GNOME-Bugzilla-Product=gnome-control-center
+X-GNOME-Bugzilla-Component=asahi-health
+X-GNOME-UsesNotifications=true
+
+# Keywords for searching in Settings
+Keywords=system;health;asahi;apple;silicon;performance;optimization;hardware;
+
+# Additional metadata
+MimeType=
+NoDisplay=false

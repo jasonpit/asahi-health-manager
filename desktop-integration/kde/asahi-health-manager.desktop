@@ -1,0 +1,22 @@
+[Desktop Entry]
+Type=Service
+X-KDE-ServiceTypes=KCModule
+X-KDE-Library=kcm_asahi_health
+X-KDE-FactoryName=AsahiHealthFactory
+X-KDE-ParentApp=kcontrol
+
+Name=Asahi Health Manager
+Name[en_US]=Asahi Health Manager
+Comment=System health management and optimization for Asahi Linux
+Comment[en_US]=System health management and optimization for Asahi Linux
+
+Icon=asahi-app-manager
+Exec=python3 /opt/asahi-health-manager/ui/app_manager_ui.py
+
+X-KDE-Keywords=system,health,asahi,apple,silicon,optimization,performance
+X-KDE-Keywords[en_US]=system,health,asahi,apple,silicon,optimization,performance
+
+Categories=Qt;KDE;X-KDE-settings-system;
+
+X-KDE-System-Settings-Parent-Category=system-administration
+X-KDE-Weight=100

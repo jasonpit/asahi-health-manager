@@ -1,4 +1,4 @@
-# Asahi System Healer
+# Asahi Health Manager
 
 <p align="center">
   <img src="icons/asahi-app-manager.svg" alt="Asahi Health Manager" width="96" height="96">
@@ -17,7 +17,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
 [![Asahi Linux](https://img.shields.io/badge/Asahi-Linux-red.svg)](https://asahilinux.org/)
-[![AI Powered](https://img.shields.io/badge/AI-Powered-green.svg)](https://github.com/your-repo/asahi-health-manager)
+[![AI Powered](https://img.shields.io/badge/AI-Powered-green.svg)](https://github.com/mruser/asahi-health-manager)
 
 ## Features
 
@@ -95,15 +95,15 @@
 ### One-Line Installation
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/your-repo/asahi-health-manager/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/mruser/asahi-health-manager/main/install.sh | bash
 ```
 
 ### Manual Installation
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/your-repo/asahi-ai-system-manager.git
-   cd asahi-ai-system-manager
+   git clone https://github.com/mruser/asahi-health-manager.git
+   cd asahi-health-manager
    ```
 
 2. **Run the installer:**
@@ -126,7 +126,7 @@ curl -fsSL https://raw.githubusercontent.com/your-repo/asahi-health-manager/main
 asahi-healer --scan
 
 # Launch the Application Manager (NEW!)
-asahi-healer --apps
+python3 ui/app_manager_ui.py
 
 # Install desktop integration for easy access (NEW!)
 ./install-desktop-integration.sh
@@ -150,6 +150,7 @@ System Scanning:
 
 Application Management:
   --apps              Launch intelligent app manager (NEW!)
+  --profile           Launch profile manager for cloud sync
 
 Fixing & Maintenance:
   --fix-all           Auto-fix all detected issues
@@ -201,16 +202,24 @@ The new Intelligent Application Manager provides a curated selection of applicat
 
 ```bash
 # Launch the Application Manager
-asahi-healer --apps
+python3 ui/app_manager_ui.py
 ```
 
 #### Main Menu Options:
-1. **Browse by Category**: Explore apps organized by type
-2. **View Top Recommendations**: See the most popular uninstalled apps
+1. **System Health Check**: Comprehensive system analysis and monitoring
+2. **Apps Menu**: Access to installed apps, popular apps, search, and categories
+3. **Desktop Launchers**: Create custom desktop application launchers  
+4. **Theme Support**: Desktop customization and theme management
+5. **System Updates**: Update management for DNF and Flatpak packages
+6. **Exit**: Clean exit from the application
+
+#### Apps Submenu Options:
+1. **View Installed Apps**: See what's currently installed on your system
+2. **Browse Popular Apps**: Discover the most recommended applications
 3. **Search Applications**: Find apps by name or description
-4. **View Installed Apps**: See what's already installed
+4. **Browse by Category**: Explore apps organized by type (Development, Multimedia, etc.)
 5. **Quick Install Essentials**: One-click installation of must-have apps
-6. **Export Recommendations**: Save app list to JSON file
+6. **Back to Main Menu**: Return to main menu
 
 ### Essential Applications Included
 
@@ -261,11 +270,14 @@ The integrated Theme Manager provides professional desktop customization with cu
 #### Access Theme Manager:
 ```bash
 # Method 1: Through App Manager
-asahi-healer --apps
-# → Browse by Category → Themes & Customization → Theme Manager
+python3 ui/app_manager_ui.py
+# → Theme Support → Launch Theme Manager
 
-# Method 2: Direct launch (after desktop integration)
-# Search for "Asahi App Manager" → Right-click → Theme Manager
+# Method 2: Direct launch
+python3 ui/theme_manager_ui.py
+
+# Method 3: After desktop integration
+# Search for "Asahi Health Manager" → Right-click → Theme Manager
 ```
 
 ### Theme Categories
@@ -335,16 +347,16 @@ asahi-healer --apps
 ```
 
 **After installation, you can:**
-- **Find "Asahi App Manager" in your applications menu**
+- **Find "Asahi Health Manager" in your applications menu**
 - **Pin to taskbar/dock** for one-click access
 - **Right-click for quick actions**: App Manager, Theme Manager, System Scan
 - **Search by typing "Asahi"** in your app launcher
 
 **Desktop Environment Support:**
-- **KDE Plasma**: Application Menu → System → Asahi App Manager
-- **GNOME**: Activities → Show Applications → Asahi App Manager
-- **XFCE**: Applications Menu → System → Asahi App Manager
-- **MATE**: Applications Menu → System Tools → Asahi App Manager
+- **KDE Plasma**: Application Menu → System → Asahi Health Manager
+- **GNOME**: Activities → Show Applications → Asahi Health Manager
+- **XFCE**: Applications Menu → System → Asahi Health Manager
+- **MATE**: Applications Menu → System Tools → Asahi Health Manager
 
 ## Configuration
 
@@ -716,7 +728,7 @@ DANGEROUS_COMMANDS = [
 {
   "timestamp": "2024-12-27T14:30:52Z",
   "event_type": "security_command_executed",
-  "user": "jason",
+  "user": "mruser",
   "hostname": "macbook-asahi", 
   "command": "sudo systemctl restart wifi-driver",
   "risk_level": "medium",
@@ -1093,8 +1105,8 @@ We welcome contributions from the community! Here's how you can help:
 
 ```bash
 # 1. Fork and clone the repository
-git clone https://github.com/your-username/asahi-ai-system-manager.git
-cd asahi-ai-system-manager
+git clone https://github.com/mruser/asahi-health-manager.git
+cd asahi-health-manager
 
 # 2. Create a virtual environment
 python3 -m venv venv
@@ -1262,7 +1274,7 @@ For new features, please describe:
 
 For security vulnerabilities:
 - **DO NOT** create public issues
-- Email security concerns to: security@example.com
+- Email security concerns to: mruser@example.com  
 - Provide detailed reproduction steps
 - Allow reasonable time for fixes before disclosure
 
@@ -1279,8 +1291,8 @@ For security vulnerabilities:
 
 - **[Asahi Linux IRC](https://asahilinux.org/community/)**: #asahi on OFTC
 - **[Reddit Community](https://reddit.com/r/AsahiLinux)**: Discussions and support
-- **[GitHub Discussions](https://github.com/your-repo/asahi-ai-system-manager/discussions)**: Feature ideas and Q&A
-- **[Documentation Wiki](https://github.com/your-repo/asahi-ai-system-manager/wiki)**: Community guides
+- **[GitHub Discussions](https://github.com/mruser/asahi-health-manager/discussions)**: Feature ideas and Q&A
+- **[Documentation Wiki](https://github.com/mruser/asahi-health-manager/wiki)**: Community guides
 
 ### Professional Support
 
@@ -1291,14 +1303,16 @@ Enterprise support available for:
 - Feature development
 - Training and consulting
 
-Contact: enterprise@example.com
+Contact: mruser@example.com
 
 ## Project Structure
 
 ```
 asahi-health-manager/
-├── 📄 asahi_healer.py              # Main application entry point
+├── 📄 asahi_healer.py              # Main system health application entry point  
 ├── 📄 asahi-app-manager.desktop    # Desktop application entry
+├── 📄 profile_manager.py           # Profile manager launcher
+├── 📄 ascii_art.py                 # ASCII art and terminal graphics
 ├── 📁 core/                        # Core system modules
 │   ├── 🔍 system_scanner.py        # Comprehensive system health scanning
 │   ├── 🤖 ai_integration.py        # Claude/OpenAI API integration
@@ -1306,18 +1320,23 @@ asahi-health-manager/
 │   ├── 🔧 auto_fixer.py           # Safe automated repair system
 │   ├── ⏰ scheduler.py             # Cron-based task scheduling
 │   ├── 📱 app_manager.py           # Intelligent application management
-│   └── 🎨 theme_manager.py         # Desktop theme management
+│   ├── 🎨 theme_manager.py         # Desktop theme management
+│   ├── 🖥️  desktop_integration.py  # Desktop launcher creation
+│   └── 👤 user_profile.py          # User profile and cloud sync
 ├── 📁 ui/                          # User interface components
-│   ├── 🖥️  terminal_ui.py          # Rich terminal interface
+│   ├── 🖥️  terminal_ui.py          # Rich terminal interface for system scan
 │   ├── 📱 app_manager_ui.py        # Application manager interface
-│   └── 🎨 theme_manager_ui.py      # Theme manager interface
+│   ├── 🎨 theme_manager_ui.py      # Theme manager interface
+│   └── 👤 profile_manager_ui.py    # Profile manager interface
 ├── 📁 utils/                       # Utility modules
 │   ├── ⚙️  config_manager.py       # YAML configuration management
 │   └── 📝 logger.py               # Comprehensive logging system
-├── 📁 icons/                       # Application icons
-│   └── 🎯 asahi-app-manager.svg    # Main application icon
+├── 📁 icons/                       # Application icons and themes
+│   ├── 🎯 asahi-app-manager.svg    # Main application icon
+│   └── 📁 terminal-theme/          # Terminal-themed icon collection
+├── 📁 data/, scanners/, fixers/    # Data files and modules
 ├── 📄 launch-app-manager.sh        # Desktop launcher for app manager
-├── 📄 launch-theme-manager.sh      # Desktop launcher for theme manager
+├── 📄 launch-theme-manager.sh      # Desktop launcher for theme manager  
 ├── 📄 launch-system-scan.sh        # Desktop launcher for system scan
 ├── 📄 install-desktop-integration.sh # Desktop integration installer
 ├── 📄 requirements.txt             # Python dependencies
@@ -1416,7 +1435,7 @@ asahi-healer --help
 
 ---
 
-**Repository**: https://github.com/your-repo/asahi-ai-system-manager  
+**Repository**: https://github.com/mruser/asahi-health-manager  
 **License**: MIT  
 **Version**: 1.0.0  
-**Maintained by**: The Asahi System Healer Team
+**Maintained by**: Mr User and the Asahi Health Manager Team

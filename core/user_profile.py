@@ -42,6 +42,12 @@ class UserPreferences:
     auto_update_settings: Dict[str, bool]
     notification_preferences: Dict[str, bool]
     privacy_settings: Dict[str, bool]
+    # Enhanced cloud sync preferences
+    cloud_sync_preferences: Dict[str, Any]
+    desktop_launcher_configs: List[Dict[str, str]]
+    system_optimization_settings: Dict[str, Any]
+    ai_assistant_preferences: Dict[str, Any]
+    custom_shortcuts: Dict[str, str]
 
 @dataclass
 class UserProfile:
