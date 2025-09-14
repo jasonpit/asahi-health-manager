@@ -3,7 +3,7 @@
 ## Overview
 This document summarizes the comprehensive improvements made to the Asahi Health Manager, addressing software scanning, installation performance, system updates, and user profile synchronization.
 
-## 🔍 Enhanced Software Detection & Scanning
+## Enhanced Software Detection & Scanning
 
 ### Comprehensive Package Manager Support
 - **DNF/RPM**: Complete package listing with `rpm -qa`
@@ -26,7 +26,7 @@ This document summarizes the comprehensive improvements made to the Asahi Health
 }
 ```
 
-## ⚡ Optimized Installation Performance
+## Optimized Installation Performance
 
 ### Speed Improvements
 1. **Reduced Timeouts**: Installation timeout reduced from 5 minutes to 2 minutes
@@ -49,7 +49,7 @@ dnf install package
 dnf install --assumeyes --quiet --best --setopt=max_parallel_downloads=10 package1 package2 package3
 ```
 
-## 🔄 System Update Management
+## System Update Management
 
 ### Comprehensive Update Detection
 - **DNF Updates**: Regular and security updates with priority classification
@@ -73,7 +73,7 @@ dnf install --assumeyes --quiet --best --setopt=max_parallel_downloads=10 packag
 - `perform_system_update()`: Automated update installation
 - `get_update_recommendations()`: Intelligent update prioritization
 
-## 👤 User Profile & Cloud Sync System
+## User Profile & Cloud Sync System
 
 ### Complete Profile Management
 - **Hardware Detection**: Apple Silicon model, RAM, screen resolution, desktop environment
@@ -104,7 +104,7 @@ UserProfile:
   - sync_settings: Cloud configuration
 ```
 
-## 🖥️ Enhanced User Interface
+## Enhanced User Interface
 
 ### New UI Components
 1. **All Installed Packages View**: Comprehensive system package display
@@ -118,7 +118,7 @@ UserProfile:
 - Batch operation summaries
 - Update priority visual indicators
 
-## 🔧 Usage Examples
+## Usage Examples
 
 ### Enhanced App Installation
 ```bash
@@ -149,7 +149,7 @@ python3 /path/to/profile_manager.py
 # Firmware and Flatpak update management
 ```
 
-## 📈 Performance Improvements
+## Performance Improvements
 
 ### Installation Speed
 - **Before**: ~3-5 minutes for 5 apps (sequential)
@@ -166,7 +166,7 @@ python3 /path/to/profile_manager.py
 - **Reduced**: Truncated error messages and limited output buffers
 - **Efficient**: Batch operations reduce system call overhead
 
-## 🛡️ Safety & Reliability
+## Safety & Reliability
 
 ### Enhanced Safety
 - **Backup Integration**: Automatic profile backups before major changes
@@ -180,7 +180,7 @@ python3 /path/to/profile_manager.py
 - **User Control**: Granular privacy settings
 - **Optional Sync**: Cloud sync is completely optional
 
-## 🚀 Quick Start Guide
+## Quick Start Guide
 
 ### For Existing Users
 1. Pull the latest changes: `git pull`
@@ -200,7 +200,7 @@ python3 /path/to/profile_manager.py
 3. Install updates with progress tracking
 4. Automatic reboot handling
 
-## 🔮 Future Enhancements
+## Future Enhancements
 
 ### Planned Features
 - **Additional Cloud Providers**: Dropbox, Google Drive, OneDrive

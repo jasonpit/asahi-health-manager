@@ -21,6 +21,7 @@ import sys
 sys.path.append('..')
 from core.app_manager import AsahiAppManager, AppCategory, Application
 from ui.theme_manager_ui import ThemeManagerUI
+from ascii_art import get_header_for_width, MINIMAL_HEADER
 
 
 class AppManagerUI:
@@ -31,14 +32,20 @@ class AppManagerUI:
         self.app_manager = AsahiAppManager()
         
     def display_header(self):
-        """Display the application manager header"""
-        header = Panel.fit(
-            "[bold cyan]Asahi Linux Intelligent App Manager[/bold cyan]\n"
-            "[dim]Curated applications optimized for Apple Silicon[/dim]",
-            border_style="cyan",
-            padding=(1, 2)
+        """Display the application manager header with ASCII art"""
+        # Get appropriate ASCII art header for terminal width
+        ascii_header = get_header_for_width()
+        
+        # Display ASCII art header
+        self.console.print(ascii_header, style="bold cyan")
+        
+        # Add subtitle
+        subtitle = Panel.fit(
+            "[dim]Intelligent App Manager - Curated applications for Apple Silicon[/dim]",
+            border_style="dim cyan",
+            padding=(0, 1)
         )
-        self.console.print(header)
+        self.console.print(subtitle)
         self.console.print()
     
     def display_main_menu(self) -> str:

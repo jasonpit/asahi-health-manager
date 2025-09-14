@@ -1,6 +1,18 @@
 # Asahi System Healer
 
-An advanced, AI-powered system health management tool specifically designed for Asahi Linux on Apple Silicon Macs.
+<p align="center">
+  <img src="icons/asahi-app-manager.svg" alt="Asahi Health Manager" width="96" height="96">
+</p>
+
+<p align="center">
+  <strong>An advanced, AI-powered system health management tool specifically designed for Asahi Linux on Apple Silicon Macs.</strong>
+</p>
+
+<p align="center">
+  <img src="https://asahilinux.org/img/AsahiLinux_logomark.svg" alt="Asahi Linux" width="48" height="48">
+  <br>
+  <em>Built for the Asahi Linux Community</em>
+</p>
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)

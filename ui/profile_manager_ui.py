@@ -16,6 +16,7 @@ from rich.progress import Progress, SpinnerColumn, TextColumn
 from typing import Optional
 
 from core.user_profile import UserProfileManager, UserProfile
+from ascii_art import get_header_for_width, APP_ICON_SMALL
 
 class ProfileManagerUI:
     """User interface for profile management"""
@@ -25,17 +26,18 @@ class ProfileManagerUI:
         self.profile_manager = UserProfileManager()
     
     def display_header(self):
-        """Display the profile manager header"""
-        header_text = Text.assemble(
-            ("Asahi Health Manager", "bold blue"),
-            (" - User Profile & Sync Manager", "white")
-        )
+        """Display the profile manager header with ASCII art"""
+        # Display ASCII art header
+        ascii_header = get_header_for_width()
+        self.console.print(ascii_header, style="bold blue")
         
-        self.console.print(Panel(
-            header_text,
-            subtitle="Sync your settings across devices",
-            border_style="blue"
-        ))
+        # Add profile-specific subtitle
+        subtitle = Panel.fit(
+            "[dim]User Profile & Cloud Sync Manager - Sync your settings across devices[/dim]",
+            border_style="dim blue",
+            padding=(0, 1)
+        )
+        self.console.print(subtitle)
     
     def display_current_profile(self):
         """Display current profile information"""

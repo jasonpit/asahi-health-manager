@@ -16,6 +16,7 @@ from rich.live import Live
 from rich.tree import Tree
 from rich.syntax import Syntax
 import shutil
+from ascii_art import get_header_for_width
 
 class TerminalUI:
     def __init__(self):
@@ -29,16 +30,13 @@ class TerminalUI:
         self._show_banner()
         
     def _show_banner(self):
-        """Show the application banner"""
-        banner = """
-╔═══════════════════════════════════════════════════════════════╗
-║                   ASAHI SYSTEM HEALER                         ║
-║               Advanced System Health Management               ║
-║                     for Asahi Linux                          ║
-╚═══════════════════════════════════════════════════════════════╝
-        """
+        """Show the application banner with ASCII art"""
+        # Get appropriate ASCII art header for terminal width
+        ascii_header = get_header_for_width()
         
-        self.console.print(banner, style="bold blue")
+        self.console.print(ascii_header, style="bold blue")
+        
+        # Add descriptive subtitle
         self.console.print(f"Apple Silicon Mac System Health Management", style="green")
         self.console.print(f"AI-Powered Analysis & Recommendations", style="cyan")
         self.console.print("")
@@ -512,11 +510,11 @@ class TerminalUI:
                     continue
                 
                 status_icon = {
-                    'critical': '🔴',
-                    'concerning': '🟡', 
-                    'poor': '🟠',
-                    'good': '🟢'
-                }.get(status, '❓')
+                    'critical': '[!]',
+                    'concerning': '[!]', 
+                    'poor': '[!]',
+                    'good': '[+]'
+                }.get(status, '[?]')
                 
                 overview_table.add_row(
                     component.replace('_', ' ').title(),
@@ -563,11 +561,11 @@ class TerminalUI:
                 severity = finding.get('severity', 'medium')
                 
                 severity_icon = {
-                    'critical': '🔴',
-                    'high': '🟠',
-                    'medium': '🟡',
-                    'low': '🔵'
-                }.get(severity, '❓')
+                    'critical': '[!]',
+                    'high': '[!]',
+                    'medium': '[!]',
+                    'low': '[+]'
+                }.get(severity, '[?]')
                 
                 self.console.print(f"  {severity_icon} {issue}")
                 if details:
@@ -578,7 +576,7 @@ class TerminalUI:
     
     def show_message(self, message: str, style: str = "white"):
         """Show a message to the user"""
-        self.console.print(f"💬 {message}", style=style)
+        self.console.print(f"[>] {message}", style=style)
     
     async def confirm(self, question: str) -> bool:
         """Ask user for confirmation"""

@@ -357,7 +357,7 @@ class ConfigManager:
             print()
             
             # Scheduling Configuration
-            print("⏰ Scheduling Configuration")
+            print("Scheduling Configuration")
             print("-------------------------")
             
             enable_scheduling = input("Enable scheduled scans? (y/N): ").lower().strip()

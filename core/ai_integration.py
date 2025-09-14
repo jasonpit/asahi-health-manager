@@ -29,7 +29,7 @@ class AIIntegration:
         claude_available = await self._test_claude_connection()
         openai_available = await self._test_openai_connection()
         
-        logging.info(f"AI Integration initialized - Claude: {'✓' if claude_available else '✗'}, OpenAI: {'✓' if openai_available else '✗'}")
+        logging.info(f"AI Integration initialized - Claude: {'[+]' if claude_available else '[-]'}, OpenAI: {'[+]' if openai_available else '[-]'}")
         return claude_available or openai_available
     
     async def _test_claude_connection(self) -> bool:
